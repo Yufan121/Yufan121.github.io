@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="John Doe">
+
+
+
+
+
+
+
+<title>Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/frame.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 6.1.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Frame.
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Home</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Archive</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/gallery/">Gallery</a>
+              </li> 
+                   
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+        </div>
+        <div class="post-title">
+            
+            
+                *Untitled
+            
+            
+        </div>
+        <span class="post-date">
+            May 4, 2022
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <hr>
+<h2 id="COMP4300-Lab-4-2022"><a href="#COMP4300-Lab-4-2022" class="headerlink" title="COMP4300 Lab 4 2022"></a>COMP4300 Lab 4 2022</h2><p>Lab 4 for COMP4300 - Distributed Memory Programming with MPI</p>
+<h1 id="Distributed-Memory-Parallel-Programming-with-MPI"><a href="#Distributed-Memory-Parallel-Programming-with-MPI" class="headerlink" title="Distributed Memory Parallel Programming with MPI"></a>Distributed Memory Parallel Programming with MPI</h1><p><em>The aim of this lab is introduce and practice using MPI for distributed memory parallel programming paradigm</em></p>
+<p>Distributed memory programming utilises multiple cores which do not have a shared memory system. This lab does require the use of the Gadi system; you should complete it there. Login instructions are contained within Lab 1, so if you’re not sure how to do this you should refer to those notes.  </p>
+<p>Once you’ve got access to Gadi, you should fork this repo, and then make a clone on Gadi.  </p>
+<h2 id="Getting-Started-with-MPI"><a href="#Getting-Started-with-MPI" class="headerlink" title="Getting Started with MPI"></a>Getting Started with MPI</h2><p>There are quite a few moving parts when it comes to MPI programs, so we’re going to start simple, with a Hello, World program. Before you run this program, you need to tell Gadi that you’re going to be using MPI, which can be done by entering the <code>module load openmpi</code> command into the terminal (openMPI is the specific implementation of MPI we use). This is done so that the correct libraries are loaded into your interactive session.<br>Next, take a look at the provided <code>mpi_hello.c</code> file, the code of which is replicated here:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span>  <span class="comment">/* For strlen             */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mpi.h&gt;</span>     <span class="comment">/* For MPI functions, etc */</span> </span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAX_STRING = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">   <span class="type">char</span>       greeting[MAX_STRING];  <span class="comment">/* String storing message */</span></span><br><span class="line">   <span class="type">int</span>        comm_sz;               <span class="comment">/* Number of processes    */</span></span><br><span class="line">   <span class="type">int</span>        my_rank;               <span class="comment">/* My process rank        */</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Start up MPI */</span></span><br><span class="line">   MPI_Init(<span class="literal">NULL</span>, <span class="literal">NULL</span>); </span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Get the number of processes */</span></span><br><span class="line">   MPI_Comm_size(MPI_COMM_WORLD, &amp;comm_sz); </span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Get my rank among all the processes */</span></span><br><span class="line">   MPI_Comm_rank(MPI_COMM_WORLD, &amp;my_rank); </span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (my_rank != <span class="number">0</span>) &#123; </span><br><span class="line">      <span class="comment">/* Create message */</span></span><br><span class="line">      <span class="built_in">sprintf</span>(greeting, <span class="string">&quot;Greetings from process %d of %d!&quot;</span>, </span><br><span class="line">            my_rank, comm_sz);</span><br><span class="line">      <span class="comment">/* Send message to process 0 */</span></span><br><span class="line">      MPI_Send(greeting, <span class="built_in">strlen</span>(greeting)+<span class="number">1</span>, MPI_CHAR, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">            MPI_COMM_WORLD); </span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">      <span class="comment">/* Print my message */</span></span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Greetings from process %d of %d!\n&quot;</span>, my_rank, comm_sz);</span><br><span class="line">      <span class="keyword">for</span> (<span class="type">int</span> q = <span class="number">1</span>; q &lt; comm_sz; q++) &#123;</span><br><span class="line">         <span class="comment">/* Receive message from process q */</span></span><br><span class="line">         MPI_Recv(greeting, MAX_STRING, MPI_CHAR, q,</span><br><span class="line">            <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">         <span class="comment">/* Print message from process q */</span></span><br><span class="line">         <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, greeting);</span><br><span class="line">      &#125; </span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Shut down MPI */</span></span><br><span class="line">   MPI_Finalize(); </span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;  <span class="comment">/* main */</span></span><br></pre></td></tr></table></figure>
+<p>Take note of a couple of things. Firstly, the <code>MPI_Init</code> call; your code will compile, but complain without this. We also get our first look at the <code>MPI_Send</code> and <code>MPI_Recv</code> calls; which are the backbone of parallel programming with MPI. Looking at the man pages, we see that the arguments to these calls are the following:<br><code>int MPI_Send(const void *buf, int count, MPI_Datatype datatype, int dest, int tag, MPI_Comm comm)</code><br><code>int MPI_Recv(void *buf, int count, MPI_Datatype datatype, int source, int tag, MPI_Comm comm, MPI_Status *status)</code><br>You can see a couple of things immediately: we can only send and receive data of a type that MPI has implemented as an <code>MPI_Datatype</code>. We also need to know the length of the message at both send and receive time. The receiver has an argument for who it’s listening for messages from, but this isn’t a restriction - the special argument <code>MPI_ANY_SOURCE</code> will allow you to listen for any messages directed to you.<br>Having read through the program (and asked your tutor about anything that’s unclear!), now it’s time to compile and run it. The compilation can be done with a wrapper for the gcc compiler, <code>mpicc</code> in the same fashion as normal, e.g<br><code>mpicc -g -Wall -o mpi_hello mpi_hello.c</code><br>When we run an MPI program, we need to specify how many processes we want; this is done by utilising the <code>mpirun</code> command to run our program, like so<br><code>mpirun -n 8 ./mpi_hello</code>.<br>A couple of tasks before we move on to more interesting MPI programs:</p>
+<ul>
+<li>You can use only this program, along with command line arguments to determine how many processes are available to you on a Gadi login node. How many are there?</li>
+<li>When you did the last question, you might have found that there we some arguments you could enter without getting errors, but that took a long time (potentially causing your terminal to disconnect). Why?</li>
+<li>(Theory question) What is the MPI_COMM_WORLD thing floating around this code? Can you think of a circumstance where you would ever want to use a communicator other than MPI_COMM_WORLD?<h2 id="Collective-Communication"><a href="#Collective-Communication" class="headerlink" title="Collective Communication"></a>Collective Communication</h2>The main thing that differentiates distributed memory paradigms from shared memory ones is the need for processes to explicitly communicate. So it’s worth our time to look over some of the collective communication options that exist, besides <code>MPI_Send</code> and <code>MPI_Recv</code>.<br>To start with, you’ve seen a number of operations throughout this course that are some sort of reduction; global sums, global max, etc. MPI has implementations of many of these through the <code>MPI_Reduce</code> function, which has a signature like this:  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Reduce</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="type">void</span>* input_data_p,</span></span><br><span class="line"><span class="params">    <span class="type">void</span>* output_data_p,</span></span><br><span class="line"><span class="params">    <span class="type">int</span> count,</span></span><br><span class="line"><span class="params">    MPI_Datatype datatype,</span></span><br><span class="line"><span class="params">    MPI_Op operator,</span></span><br><span class="line"><span class="params">    <span class="type">int</span> dest_process,</span></span><br><span class="line"><span class="params">    MPI_Comm comm</span></span><br><span class="line"><span class="params">)</span></span><br></pre></td></tr></table></figure>
+Many of these arguments you’ve seen before in other functions; the count is the amount of data being transmitted from process to process at any given time, the datatype is the type of that data, the destination process is where you want the output to end up, etc. The main new one is the <code>MPI_Op operator</code> argument, which is taken from the following list:  </li>
+<li><code>MPI_MAX</code>: Maximum</li>
+<li><code>MPI_MIN</code>: Minimum</li>
+<li><code>MPI_SUM</code>: Sum</li>
+<li><code>MPI_PROD</code>: Product</li>
+<li><code>MPI_LAND</code>: Logical AND</li>
+<li><code>MPI_BAND</code>: Bitwise AND</li>
+<li><code>MPI_LOR</code>: Logical OR</li>
+<li><code>MPI_BOR</code>: Bitwise OR</li>
+<li><code>MPI_LXOR</code>: Logical XOR</li>
+<li><code>MPI_BXOR</code>: Bitwise XOR</li>
+<li><code>MPI_MAXLOC</code>: Maximum and location of maximum</li>
+<li><code>MPI_MINLOC</code>: Minimum and location of minimum</li>
+</ul>
+<p>Your task is this: start by reading the provided <code>mpi_trap.c</code> file. This file contains a relatively inefficient method for computing the trapezoidal rule-based integration of a function <code>f</code>. Replacing the appropriate section of code with an <code>MPI_Reduce</code> operation, make the program more efficient at computing the trapezoidal rule. You will know that you have succeeded if your program is consistently more performant for higher numbers of processes (&gt;&#x3D;16). This means to know if what you’ve done worked, you will need to take some baseline measurements of runtime first. If you’re struggling to see a speedup, see the next section for details on how to submit to the PBS queue, which will give you access to many more CPUs to play with</p>
+<h2 id="PBS-Queues-and-Accessing-Gadi"><a href="#PBS-Queues-and-Accessing-Gadi" class="headerlink" title="PBS Queues, and Accessing Gadi"></a>PBS Queues, and Accessing Gadi</h2><p>In the previous two exercises, you’ve so far used the interactive nodes on Gadi. These are great, because they don’t use up the CPU time budget, and let you easily test your parallel code for small numbers of processors. However, you don’t get access to all that many CPUs on the interactive nodes, and you have to compete for them with others using that node.  </p>
+<p>Enter the PBS Queue system! This is a system where you submit batch jobs to a queue that determines whose code is allowed to run on Gadi at what time. This is done through a submission script; a bit of bash which specifies what you want Gadi to do, and which resources you want to use. Let’s take a look at the preamble of one (provided as <code>batch_trap</code>):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#PBS -p c37</span><br><span class="line">#PBS -q normal</span><br><span class="line">#PBS -j oe</span><br><span class="line">#PBS -l walltime=00:01:00,mem=16GB</span><br><span class="line">#PBS -l wd</span><br><span class="line">#PBS -l ncpus=8</span><br></pre></td></tr></table></figure>
+<p>You can see a quick guide which summarises all available directives <a target="_blank" rel="noopener" href="https://opus.nci.org.au/display/Help/Gadi+Quick+Reference+Guide">on the NCI support page</a>, as well as a <a target="_blank" rel="noopener" href="https://opus.nci.org.au/display/Help/PBS+Directives+Explained">more detailed guide</a> on directives specifically but we’ll take you through the ones used here.  </p>
+<ul>
+<li><code>-P c37</code> indicates that this job should be attached to the <code>c37</code> project (which is the one for our course). This line is only essential if you utilise Gadi for multiple projects, but it’s good to know about in case you do further research in HPC.</li>
+<li>The <code>-q normal</code> line says that we are submitting to the <code>normal</code> queue; other options include an <code>express</code> queue (which uses up more of the grant, but is less busy), and a <code>gpuvolta</code> queue, which allows you to utilise GPUs as well as CPUs. You will only ever need the <code>normal</code> queue in this course, unless you’re doing extension GPU work on the major project.</li>
+<li><code>-j oe</code> merges STOUT and STDERR into STDOUT, so any errors are printed to STDOUT</li>
+<li><code>-l walltime=00:01:00, mem=16GB</code> is probably the most important line, and you must never leave it out. It limits the amount of walltime used to 1 minute, and the amount of memory used to 16GB. This line is essential, as without a timeout limit, an infinite loop could use up the entire compute budget of the course!</li>
+<li><code>l wd</code> causes Gadi to enter the directory from which the job was submitted, meaning you can access files in the same directory as the submission script in your code</li>
+<li><code>l ncpus=8</code> indicates we want to request 8 CPUs for this job</li>
+</ul>
+<p>The rest of the script is bash code indicating what Gadi should do. You don’t need to understand this in great depth (this isn’t a bash scripting course, after all), but do read it and try to get a sense for what it’s doing. In particular, on this line: <code>mpirun -np $p ./mpi_trap</code>, you need to replace <code>./mpi_trap</code> with whatever the name of your compiled executable is.<br>Once you’ve got a submission script, the next step is to submit it to the queue! This is done using the <code>qsub</code> instruction in your terminal, e.g: <code>qsub batch_trap</code>. If you want to get details on your running PBS jobs, you can use the <code>qstat</code> command. <code>qstat -a</code> returns details of all your active jobs, while <code>qstat &lt;job number&gt;</code> returns information for just that job. The job number is provided to you in the terminal when you run the <code>qsub</code> command.<br>An example of what the <code>qstat -a</code> output might look like is below:  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gadi-pbs: </span><br><span class="line">                                                                 Req&#x27;d  Req&#x27;d   Elap</span><br><span class="line">Job ID               Username Queue    Jobname    SessID NDS TSK Memory Time  S Time</span><br><span class="line">-------------------- -------- -------- ---------- ------ --- --- ------ ----- - -----</span><br><span class="line">35648171.gadi-pbs    tw3382   normal-* batch_trap    --    1   8   16gb 00:01 Q   -- </span><br><span class="line">```  </span><br><span class="line">This indicates the job ID, queue, jobname, and confirms the memory and time caps. The S field indicates the status of the job; Q means that it is in the queue for execution. If it is currently running at the time you run the `qstat` command, it will instead have an R, like so:  </span><br></pre></td></tr></table></figure>
+<p>gadi-pbs:<br>                                                                 Req’d  Req’d   Elap<br>Job ID               Username Queue    Jobname    SessID NDS TSK Memory Time  S Time</p>
+<hr>
+<p>35648347.gadi-pbs    tw3382   normal-* batch_trap 808926   2  96   16gb 00:01 R 00:00</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">Once the job is complete, a new file will appear which contains the STDOUT/STDERR produced by the program during its time running on Gadi, along with a summary of the execution at the bottom.  </span><br><span class="line">Your task for this exercise is to get familiar with utilising PBS queues, by testing your implementation of collective communication from the previous exercise with &gt;48 CPUs. Note that this will require modifying the bash script; if you&#x27;re struggling to figure out what to modify, ask your tutor!  </span><br><span class="line">NB: In order to get sensible results, you may need to increase the number of trapezoids being computed, to make the machine have to do more work.</span><br><span class="line"></span><br><span class="line"># Take Home Assignment Tasks</span><br><span class="line"></span><br><span class="line">## 1. MPI Send/Recv[ 1 mark ]</span><br><span class="line"></span><br><span class="line">   - The code given in [`mpi_send_fix.c`](mpi_send_fix.c) runs on exactly two processes, with both processes trying to send a big array to the other and then receive after which. But there is an issue in the code that stops it from running correctly. Find and fix the issue to make the program run correctly.</span><br><span class="line"></span><br><span class="line">   - Modify the code in [`mpi_send_nonblock.c`](mpi_send_nonblock.c) to using non-blocking communication (MPI_Isend/MPI_Irecv). The received messages should be communicated correctly.</span><br><span class="line"></span><br><span class="line">## 2. Parallel Pi Calculation [ 1 mark ]</span><br><span class="line"></span><br><span class="line">Parallelize the program in [`mpi_pi_reduce.c`](mpi_pi_reduce.c) which currently computes the pi value serially. Your code should properly distribute the computation to each process and use `MPI_Reduce` to collect the result. </span><br><span class="line"></span><br><span class="line">## 3. Manual Reduction [ 1 mark ]</span><br><span class="line"></span><br><span class="line">Implement a reduction in [`mpi_manual_reduce.c`](mpi_manual_reduce.c) to compute the sum of all the processor IDs using MPI send/recv routines rather than the built-in MPI reduction. Your code should achieve a time conplexity of O(log n). As an example, 5 number of processors used should output a 10 (10 = 0+1+2+3+4). </span><br><span class="line"></span><br><span class="line">## 4. (Optional) Benchmarking [ 1 star ]</span><br><span class="line"></span><br><span class="line">This is an additional optinal task, and you will earn a star if you complete it. Please use [`timer.h`](timer.h) to measure:</span><br><span class="line">1. The running time of manual broadcast via point-to-point communications (MPI send/recvs) vs. MPI broadcast. </span><br><span class="line">2. The running time of manual reduce via point-to-point communications (MPI send/recvs) vs. MPI reduce.</span><br><span class="line"></span><br><span class="line">The message is:</span><br><span class="line"></span><br><span class="line">- A random integer. The broadcast send other processes this random integer; while the reduce collects others&#x27; integers and calculate the sum.</span><br><span class="line"></span><br><span class="line">Your manual implementation should use only MPI send and MPI recv. You should compare the performance using the same number of processes. Your code should correctly measure the broadcast/reduce operation runnting times. For the manual implementations of broadcast and reduce, you could use your code in Task 3 and the broadcast implementation should not be hard to write. The manual broadcast should use the O(log n) implementation, such code for broadcast should be easily obtained by altering from Task 3.</span><br><span class="line"></span><br><span class="line">Please complete your code in the provided file [`mpi_perf_comp.c`](mpi_perf_comp.c), which also needs to print out the running time at the end as follows:</span><br></pre></td></tr></table></figure>
+<p>Point-to-point broadcast: 52 msecs<br>MPI broadcast: 32 msecs<br>Point-to-point reduce: 48 msecs<br>MPI reduce: 34 msecs</p>
+<pre><code>
+#### If you need to use other versions of MPI
+
+To change the version of mpi, one can use `module load openmpi/X.X.X` instead of `module load openmpi`. Adding the same directive at the start of  the job file will use the specified version on the compute node.
+ 
+To avail the available versions of openmpi, one can use module avail openmpi to show available versions. Note that you are always encouraged to use the default verion of MPI, so use this instruction only if you need to.
+
+# Submission Guidelines
+Your assignment will be submitted in Gitlab repo as follows:
+- [Fork](https://gitlab.cecs.anu.edu.au/comp4300/student-comp4300-2022-lab4/-/blob/master/README.md#forking-and-cloning-the-lab) the lab repo, then add the marker user `comp4300-2022-s1-marker` as a developer to your repo.
+
+  **How to add user**: Click “Members” on the left panel -&gt; input `comp4300-2022-s1-marker` under “Gitlab member or Email address” -&gt; Select the role permission as `Developer` -&gt; Skip the &quot;access expiration date&quot; -&gt; Invite
+- Clone the lab to your own machine and complete all tasks. Once you finish your answers, please commit and push your code to your repo.
+
+We will mark your answers and provide feedbacks to your repo.
+
+# Submission Deadline
+You must commit and push your code to your repo before **11:59pm on 4 May**. Any late updates after the deadline will not be considered.  
+
+
+# References
+
+[MPI Documentation](https://www.open-mpi.org/doc/)
+</code></pre>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2022/05/04/Lab4-1/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2022/05/04/hello-world/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+  </body>
+</html>
