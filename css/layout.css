@@ -22,3 +22,9 @@ body {
   padding: 0;
   margin: 0;
 }
+.profile-publications {
+  clear: both;
+}
+.profile-publications {
+  display: block;
+}
