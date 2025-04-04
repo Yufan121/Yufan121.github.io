@@ -486,11 +486,14 @@ brew install libadsala</code></pre>
                         The complete technical details and evaluation of ADSALA are available in our peer-reviewed paper.
                     </p>
                     <div class="mt-8">
-                        <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                        <a href="https://arxiv.org/pdf/2406.19621" target="_blank" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
                             Download PDF
                         </a>
-                        <a id="cite" href="#" class="ml-4 inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <button id="cite" class="ml-4 inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                             BibTeX Entry
+                        </button>
+                        <a href="/attaches/IPDPS24_poster.pdf" target="_blank" class="ml-4 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700">
+                            View Poster
                         </a>
                     </div>
                 </div>
@@ -507,6 +510,52 @@ brew install libadsala</code></pre>
                             <div class="mt-4 flex items-center text-sm text-gray-500">
                                 <i class="fas fa-calendar-alt mr-1"></i>
                                 <span>Published: June 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BibTeX Modal -->
+    <div id="bibtex-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
+                    <div class="absolute right-0 top-0 pr-4 pt-4">
+                        <button type="button" id="close-modal" class="rounded-md bg-white text-gray-400 hover:text-gray-500">
+                            <span class="sr-only">Close</span>
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                            <h3 class="text-lg font-semibold leading-6 text-gray-900 mb-4">BibTeX Entries</h3>
+                            <div class="mt-2 space-y-4">
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-2">IPDPS 2024</h4>
+                                    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code>@inproceedings{xia2024machine,
+  title={Machine-Learning-Driven Runtime Optimization of BLAS Level 3 on Modern Multi-Core Systems},
+  author={Xia, Yufan and Barca, Giuseppe Maria Junior},
+  booktitle={2024 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  pages={976--986},
+  year={2024},
+  organization={IEEE}
+}</code></pre>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900 mb-2">IPDPS 2023</h4>
+                                    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm"><code>@inproceedings{xia2023machine,
+  title={A machine learning approach towards runtime optimisation of matrix multiplication},
+  author={Xia, Yufan and De La Pierre, Marco and Barnard, Amanda S and Barca, Giuseppe Maria Junior},
+  booktitle={2023 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  pages={524--534},
+  year={2023},
+  organization={IEEE}
+}</code></pre>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -650,6 +699,29 @@ brew install libadsala</code></pre>
                     });
                 }
             });
+        });
+
+        // BibTeX Modal functionality
+        const modal = document.getElementById('bibtex-modal');
+        const citeButton = document.getElementById('cite');
+        const closeButton = document.getElementById('close-modal');
+
+        citeButton.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
         });
     </script>
 </body>
