@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADSALA: Adaptive BLAS Optimization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .performance-chart {
+            height: 300px;
+            background: linear-gradient(to right, #3b82f6, #10b981);
+            mask-image: linear-gradient(to top, transparent 0%, black 20%);
+        }
+        .code-block {
+            font-family: 'Courier New', monospace;
+            background-color: #1e293b;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800 bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-cube text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-semibold text-gray-900">ADSALA</span>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="#overview" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Overview</a>
+                    <a href="#performance" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Performance</a>
+                    <a href="#implementation" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Implementation</a>
+                    <a href="#download" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Download</a>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <a href="#cite" class="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">Cite Paper</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient text-white">
+        <div class="max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
+                    <h1 class="text-4xl tracking-tight font-extrabold sm:text-5xl">
+                        <span class="block">Optimizing BLAS Level 3</span>
+                        <span class="block text-blue-200">with Machine Learning</span>
+                    </h1>
+                    <p class="mt-3 text-lg text-blue-100 sm:mt-5">
+                        ADSALA dynamically selects optimal thread configurations for BLAS operations, achieving 1.5× to 3.0× speedups across multi-core systems.
+                    </p>
+                    <div class="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
+                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                            <div class="rounded-md shadow">
+                                <a href="#download" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                                    Get the Library
+                                </a>
+                            </div>
+                            <div class="mt-3 sm:mt-0 sm:ml-3">
+                                <a href="#paper" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 bg-opacity-60 hover:bg-opacity-70 md:py-4 md:text-lg md:px-10">
+                                    Read the Paper
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+                    <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md overflow-hidden">
+                        <div class="performance-chart flex items-end">
+                            <div class="w-full flex justify-between px-6 pb-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="h-40 bg-white w-8 rounded-t"></div>
+                                    <span class="text-white text-sm mt-2">Default</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="h-60 bg-white w-8 rounded-t"></div>
+                                    <span class="text-white text-sm mt-2">ADSALA</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="h-32 bg-white w-8 rounded-t"></div>
+                                    <span class="text-white text-sm mt-2">OpenBLAS</span>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <div class="h-48 bg-white w-8 rounded-t"></div>
+                                    <span class="text-white text-sm mt-2">MKL</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white px-6 py-4">
+                            <p class="text-gray-600 text-sm">Performance comparison on Intel Xeon Gold 6248R (3.0GHz)</p>
+                            <p class="text-gray-900 font-medium mt-1">Average 2.1× speedup over default configuration</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Section -->
+    <div id="overview" class="py-16 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Research Overview</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Adaptive Thread Configuration for BLAS
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    Machine learning-driven optimization of Basic Linear Algebra Subprograms (BLAS) Level 3 operations
+                </p>
+            </div>
+
+            <div class="mt-20">
+                <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+                    <div class="feature-card relative bg-white p-6 rounded-lg border border-gray-200 transition-all duration-300 ease-in-out">
+                        <div class="absolute -top-6 left-6 bg-blue-500 rounded-full p-3 text-white">
+                            <i class="fas fa-bolt text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mt-4">Performance Gains</h3>
+                        <p class="mt-2 text-base text-gray-500">
+                            Achieves 1.5× to 3.0× speedups compared to traditional maximum-thread approaches across various hardware platforms.
+                        </p>
+                    </div>
+
+                    <div class="feature-card relative bg-white p-6 rounded-lg border border-gray-200 transition-all duration-300 ease-in-out">
+                        <div class="absolute -top-6 left-6 bg-green-500 rounded-full p-3 text-white">
+                            <i class="fas fa-robot text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mt-4">ML-Powered</h3>
+                        <p class="mt-2 text-base text-gray-500">
+                            Machine learning models trained during installation to predict optimal thread counts for each operation on your specific hardware.
+                        </p>
+                    </div>
+
+                    <div class="feature-card relative bg-white p-6 rounded-lg border border-gray-200 transition-all duration-300 ease-in-out">
+                        <div class="absolute -top-6 left-6 bg-purple-500 rounded-full p-3 text-white">
+                            <i class="fas fa-expand text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mt-4">Comprehensive Coverage</h3>
+                        <p class="mt-2 text-base text-gray-500">
+                            Expanded ADSALA library includes all single- and double-precision BLAS Level 3 operations with adaptive optimization.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Section -->
+    <div id="performance" class="py-16 bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Performance</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Benchmark Results
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-lg font-medium text-gray-900">Speedup Comparison</h3>
+                    <div class="mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-500">DGEMM</span>
+                            <span class="text-sm font-bold text-blue-600">2.8×</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-500">DSYMM</span>
+                            <span class="text-sm font-bold text-green-600">2.1×</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-green-600 h-2.5 rounded-full" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-500">DTRMM</span>
+                            <span class="text-sm font-bold text-purple-600">1.7×</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-purple-600 h-2.5 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <p class="text-sm text-gray-500">
+                            Speedup factors compared to default maximum-thread configuration across different BLAS Level 3 operations.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-lg font-medium text-gray-900">System Compatibility</h3>
+                    <div class="mt-4 space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i class="fas fa-microchip text-blue-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-sm font-medium text-gray-900">Intel Xeon</h4>
+                                <p class="text-sm text-gray-500">Gold/Platinum series processors</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <i class="fas fa-server text-green-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-sm font-medium text-gray-900">AMD EPYC</h4>
+                                <p class="text-sm text-gray-500">Rome/Milan series processors</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                <i class="fas fa-laptop-code text-purple-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-sm font-medium text-gray-900">Consumer CPUs</h4>
+                                <p class="text-sm text-gray-500">Intel Core i7/i9, AMD Ryzen</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-medium text-gray-900">Performance Across Matrix Sizes</h3>
+                <div class="mt-4">
+                    <img class="w-full h-auto rounded" src="https://via.placeholder.com/800x400/3b82f6/ffffff?text=Performance+Chart" alt="Performance across different matrix sizes">
+                </div>
+                <p class="mt-4 text-sm text-gray-500">
+                    ADSALA shows consistent performance improvements across varying matrix dimensions, with particularly strong gains for medium-sized matrices (512×512 to 2048×2048).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Implementation Section -->
+    <div id="implementation" class="py-16 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Implementation</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    How ADSALA Works
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/2">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900">Installation Process</h3>
+                        <ol class="mt-4 space-y-4">
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-medium">1</span>
+                                <p class="ml-3 text-gray-700">Download and compile ADSALA library</p>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-medium">2</span>
+                                <p class="ml-3 text-gray-700">Training phase executes benchmarks to profile system performance</p>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-medium">3</span>
+                                <p class="ml-3 text-gray-700">Machine learning models are trained on the collected data</p>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-medium">4</span>
+                                <p class="ml-3 text-gray-700">Optimized library is ready for production use</p>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="mt-6 bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900">Runtime Operation</h3>
+                        <div class="mt-4">
+                            <div class="relative">
+                                <div class="absolute h-full w-0.5 bg-gray-200 left-5 top-0"></div>
+                                <ul class="relative space-y-6">
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <i class="fas fa-play text-blue-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="text-sm font-medium text-gray-900">BLAS Call</h4>
+                                            <p class="text-sm text-gray-500">Application calls a BLAS Level 3 routine</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                            <i class="fas fa-brain text-green-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="text-sm font-medium text-gray-900">Model Prediction</h4>
+                                            <p class="text-sm text-gray-500">ADSALA predicts optimal thread count based on operation parameters</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                            <i class="fas fa-tachometer-alt text-purple-600"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <h4 class="text-sm font-medium text-gray-900">Execution</h4>
+                                            <p class="text-sm text-gray-500">Operation executes with optimized thread configuration</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 mt-6 md:mt-0">
+                    <div class="bg-gray-800 p-6 rounded-lg code-block">
+                        <div class="flex items-center text-gray-400 mb-4">
+                            <div class="h-3 w-3 rounded-full bg-red-500 mr-2"></div>
+                            <div class="h-3 w-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <div class="h-3 w-3 rounded-full bg-green-500 mr-4"></div>
+                            <span class="text-sm">adsala_install.sh</span>
+                        </div>
+                        <pre class="text-green-400 overflow-x-auto"><code># Installation and training process
+./configure --prefix=/usr/local/adsala
+make
+make train   # Executes benchmark suite
+make install # Installs optimized library
+
+# Training output example
+[ADSALA] Training on Intel Xeon Gold 6248R
+[ADSALA] Benchmarking DGEMM... 2.4× potential
+[ADSALA] Benchmarking DSYMM... 1.9× potential
+[ADSALA] Generated optimization models
+[ADSALA] Installation complete</code></pre>
+                    </div>
+
+                    <div class="mt-6 bg-gray-50 p-6 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900">Technical Details</h3>
+                        <div class="mt-4 space-y-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">Machine Learning Models</h4>
+                                <p class="text-sm text-gray-500 mt-1">Random Forest and Gradient Boosted Decision Trees trained on operation parameters (matrix dimensions, operation type) and hardware counters.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">Features Used</h4>
+                                <p class="text-sm text-gray-500 mt-1">Matrix dimensions, operation type, memory hierarchy characteristics, core utilization patterns.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">Overhead</h4>
+                                <p class="text-sm text-gray-500 mt-1">Less than 1% runtime overhead for model prediction, with substantial gains in execution time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Section -->
+    <div id="download" class="py-16 bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center mb-12">
+                <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Get ADSALA</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    Download and Installation
+                </p>
+            </div>
+
+            <div class="mt-10 sm:mt-12">
+                <div class="bg-white shadow overflow-hidden rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Install via package manager</h3>
+                        <div class="mt-2 max-w-xl text-sm text-gray-500">
+                            <p>ADSALA is available through popular package managers for easy installation.</p>
+                        </div>
+                        <div class="mt-5">
+                            <div class="rounded-md shadow-sm">
+                                <div class="bg-gray-50 p-4 rounded code-block">
+                                    <div class="flex space-x-4">
+                                        <button id="tab-ubuntu" class="px-3 py-1 font-medium text-blue-600 border-b-2 border-blue-600">Ubuntu/Debian</button>
+                                        <button id="tab-centos" class="px-3 py-1 font-medium text-gray-500 hover:text-gray-700">CentOS/RHEL</button>
+                                        <button id="tab-mac" class="px-3 py-1 font-medium text-gray-500 hover:text-gray-700">macOS</button>
+                                    </div>
+                                    <div id="content-ubuntu" class="mt-3">
+                                        <pre class="text-gray-800"><code>sudo add-apt-repository ppa:adsala/optimized-blas
+sudo apt-get update
+sudo apt-get install libadsala</code></pre>
+                                    </div>
+                                    <div id="content-centos" class="mt-3 hidden">
+                                        <pre class="text-gray-800"><code>sudo yum-config-manager --add-repo https://adsala.org/repo/centos/adsala.repo
+sudo yum install libadsala</code></pre>
+                                    </div>
+                                    <div id="content-mac" class="mt-3 hidden">
+                                        <pre class="text-gray-800"><code>brew tap adsala/optimized-blas
+brew install libadsala</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+                                <i class="fas fa-file-archive text-white text-xl"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Source Code</h3>
+                                <p class="mt-1 text-sm text-gray-500">Compile from source for maximum customization</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="#" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Download .tar.gz
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                <i class="fab fa-github text-white text-xl"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">GitHub Repository</h3>
+                                <p class="mt-1 text-sm text-gray-500">Contribute or report issues</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="#" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                View on GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                                <i class="fas fa-book text-white text-xl"></i>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <h3 class="text-lg font-medium text-gray-900">Documentation</h3>
+                                <p class="mt-1 text-sm text-gray-500">Full API reference and usage examples</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="#" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Read Docs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paper Section -->
+    <div id="paper" class="py-16 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8">
+                <div class="mb-8 lg:mb-0">
+                    <h2 class="text-base text-blue-600 font-semibold tracking-wide uppercase">Research Paper</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        Cite Our Work
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-500">
+                        The complete technical details and evaluation of ADSALA are available in our peer-reviewed paper.
+                    </p>
+                    <div class="mt-8">
+                        <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                            Download PDF
+                        </a>
+                        <a id="cite" href="#" class="ml-4 inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            BibTeX Entry
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-quote-left text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-medium text-gray-900">Abstract</h4>
+                            <p class="mt-2 text-gray-600">
+                                We present ADSALA, an adaptive BLAS Level 3 library that uses machine learning to dynamically select the optimal number of threads for each operation. Our approach achieves 1.5× to 3.0× speedups compared to the traditional maximum-thread configuration across various multi-core systems. The library automatically trains models during installation that capture the performance characteristics of the target hardware, then uses these models at runtime to predict the best thread configuration for each BLAS operation.
+                            </p>
+                            <div class="mt-4 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                <span>Published: June 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                <div class="space-y-8 xl:col-span-1">
+                    <div class="flex items-center">
+                        <i class="fas fa-cube text-blue-500 text-2xl mr-2"></i>
+                        <span class="text-xl font-semibold text-white">ADSALA</span>
+                    </div>
+                    <p class="text-gray-300 text-base">
+                        Adaptive BLAS optimization through machine learning.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Resources</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Documentation</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Tutorials</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">API Reference</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-12 md:mt-0">
+                            <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Legal</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Privacy</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Terms</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">License</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Contact</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Email</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Twitter</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">GitHub Issues</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-12 md:mt-0">
+                            <h3 class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Research</h3>
+                            <ul class="mt-4 space-y-4">
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Paper</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Benchmarks</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-base text-gray-400 hover:text-white">Methodology</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-700 pt-8">
+                <p class="text-base text-gray-400 text-center">
+                    &copy; 2023 ADSALA Project. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching for installation instructions
+        document.querySelectorAll('[id^="tab-"]').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Hide all content
+                document.querySelectorAll('[id^="content-"]').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Remove active state from all tabs
+                document.querySelectorAll('[id^="tab-"]').forEach(t => {
+                    t.classList.remove('text-blue-600', 'border-blue-600');
+                    t.classList.add('text-gray-500', 'hover:text-gray-700');
+                });
+                
+                // Show selected content
+                const contentId = tab.id.replace('tab-', 'content-');
+                document.getElementById(contentId).classList.remove('hidden');
+                
+                // Set active state on selected tab
+                tab.classList.remove('text-gray-500', 'hover:text-gray-700');
+                tab.classList.add('text-blue-600', 'border-blue-600');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
