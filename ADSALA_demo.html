@@ -6,6 +6,7 @@
     <title>ADSALA: Adaptive BLAS Optimization</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .hero-gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
@@ -43,6 +44,18 @@
                     <a href="#download" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Download</a>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="relative inline-block text-left">
+                        <button id="language-selector" type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">
+                            <i class="fas fa-globe mr-2"></i>
+                            <span id="current-language">English</span>
+                        </button>
+                        <div id="language-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1" role="menu">
+                                <button class="lang-option w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-lang="en" role="menuitem">English</button>
+                                <button class="lang-option w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-lang="zh" role="menuitem">中文</button>
+                            </div>
+                        </div>
+                    </div>
                     <a href="#cite" class="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">Cite Paper</a>
                 </div>
             </div>
@@ -241,7 +254,7 @@
             <div class="mt-12 bg-white p-6 rounded-lg shadow">
                 <h3 class="text-lg font-medium text-gray-900">Performance Across Matrix Sizes</h3>
                 <div class="mt-4">
-                    <img class="w-full h-auto rounded" src="https://via.placeholder.com/800x400/3b82f6/ffffff?text=Performance+Chart" alt="Performance across different matrix sizes">
+                    <canvas id="matrixSizeChart" class="w-full h-[400px]"></canvas>
                 </div>
                 <p class="mt-4 text-sm text-gray-500">
                     ADSALA shows consistent performance improvements across varying matrix dimensions, with particularly strong gains for medium-sized matrices (512×512 to 2048×2048).
@@ -722,6 +735,301 @@ brew install libadsala</code></pre>
                 modal.classList.add('hidden');
                 document.body.style.overflow = 'auto';
             }
+        });
+
+        // Matrix size performance chart
+        const ctx = document.getElementById('matrixSizeChart').getContext('2d');
+        
+        // Performance data (speedup factors relative to default configuration)
+        const matrixSizes = ['256×256', '512×512', '1024×1024', '2048×2048', '4096×4096'];
+        const performanceData = {
+            adsalaMKL: [45.0, 28.0, 12.0, 2.8, 2.1],
+            adsalaBLIS: [38.0, 25.0, 10.0, 2.5, 1.9]
+        };
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: matrixSizes,
+                datasets: [
+                    {
+                        label: 'ADSALA+MKL',
+                        data: performanceData.adsalaMKL,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'ADSALA+BLIS',
+                        data: performanceData.adsalaBLIS,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Speedup Factor vs Matrix Size',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.parsed.y.toFixed(1)}× speedup`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 50,
+                        title: {
+                            display: true,
+                            text: 'Speedup Factor'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '×';
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Matrix Size'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update chart labels when language changes
+        function updateChartLanguage(lang) {
+            const chart = Chart.getChart('matrixSizeChart');
+            if (!chart) return;
+
+            const texts = translations[lang];
+            chart.options.plugins.title.text = lang === 'en' ? 
+                'Speedup Factor vs Matrix Size' : 
+                '矩阵大小与加速比关系';
+            
+            chart.options.scales.y.title.text = lang === 'en' ? 
+                'Speedup Factor' : 
+                '加速比';
+            
+            chart.options.scales.x.title.text = lang === 'en' ? 
+                'Matrix Size' : 
+                '矩阵大小';
+
+            chart.update();
+        }
+
+        // Add chart language update to the existing switchLanguage function
+        const originalSwitchLanguage = switchLanguage;
+        switchLanguage = function(lang) {
+            originalSwitchLanguage(lang);
+            updateChartLanguage(lang);
+        };
+
+        // Language switcher functionality
+        const languageSelector = document.getElementById('language-selector');
+        const languageMenu = document.getElementById('language-menu');
+        const currentLanguageText = document.getElementById('current-language');
+
+        // Toggle language menu
+        languageSelector.addEventListener('click', () => {
+            languageMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!languageSelector.contains(e.target)) {
+                languageMenu.classList.add('hidden');
+            }
+        });
+
+        // Language switching function
+        function switchLanguage(lang) {
+            const texts = translations[lang];
+            document.documentElement.lang = lang;
+            currentLanguageText.textContent = lang === 'en' ? 'English' : '中文';
+            
+            // Update navigation items
+            document.querySelector('a[href="#overview"]').textContent = texts.overview;
+            document.querySelector('a[href="#performance"]').textContent = texts.performance;
+            document.querySelector('a[href="#implementation"]').textContent = texts.implementation;
+            document.querySelector('a[href="#download"]').textContent = texts.download;
+            document.querySelector('a[href="#cite"]').textContent = texts.citePaper;
+            
+            // Update hero section
+            document.querySelector('.sm\\:text-5xl .block:first-child').textContent = texts.heroTitle1;
+            document.querySelector('.sm\\:text-5xl .block:last-child').textContent = texts.heroTitle2;
+            document.querySelector('.text-blue-100').textContent = texts.heroDescription;
+            document.querySelector('a[href="#download"].text-blue-700').textContent = texts.getLibrary;
+            document.querySelector('a[href="#paper"]').textContent = texts.readPaper;
+
+            // Update overview section
+            document.querySelector('.tracking-wide.uppercase').textContent = texts.researchOverview;
+            document.querySelector('.sm\\:text-4xl').textContent = texts.adaptiveThread;
+            document.querySelector('.lg\\:mx-auto').textContent = texts.mlDriven;
+
+            // Update feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards[0].querySelector('h3').textContent = texts.performanceGains;
+            featureCards[0].querySelector('p').textContent = texts.performanceDesc;
+            featureCards[1].querySelector('h3').textContent = texts.mlPowered;
+            featureCards[1].querySelector('p').textContent = texts.mlPoweredDesc;
+            featureCards[2].querySelector('h3').textContent = texts.comprehensiveCoverage;
+            featureCards[2].querySelector('p').textContent = texts.comprehensiveDesc;
+
+            // Update performance section
+            document.querySelector('#performance h2').textContent = texts.performance;
+            document.querySelector('#performance .sm\\:text-4xl').textContent = texts.benchmarkResults;
+            document.querySelector('#performance .w-full:first-child h3').textContent = texts.speedupComparison;
+            document.querySelector('#performance .w-full:last-child h3').textContent = texts.systemCompatibility;
+            document.querySelector('#performance img').alt = texts.performanceChart;
+            document.querySelector('#performance .text-gray-500:last-child').textContent = texts.performanceNote;
+
+            // Update implementation section
+            document.querySelector('#implementation h2').textContent = texts.implementation;
+            document.querySelector('#implementation .sm\\:text-4xl').textContent = texts.howItWorks;
+            document.querySelector('#implementation .bg-gray-50 h3').textContent = texts.installationProcess;
+            document.querySelector('#implementation .mt-6 h3').textContent = texts.runtimeOperation;
+            document.querySelector('#implementation .technical-details h3').textContent = texts.technicalDetails;
+
+            // Update download section
+            document.querySelector('#download h2').textContent = texts.getAdsala;
+            document.querySelector('#download .sm\\:text-4xl').textContent = texts.downloadInstallation;
+            document.querySelector('#download .leading-6').textContent = texts.installViaPackage;
+            document.querySelector('#download .text-gray-500 p').textContent = texts.packageDesc;
+
+            // Update paper section
+            document.querySelector('#paper h2').textContent = texts.researchPaper;
+            document.querySelector('#paper .sm\\:text-4xl').textContent = texts.citeOurWork;
+            document.querySelector('#paper .text-gray-500').textContent = texts.paperDesc;
+            document.querySelector('a[href$=".pdf"]').textContent = texts.downloadPdf;
+            document.querySelector('#cite').textContent = texts.bibtexEntry;
+            document.querySelector('a[href$="poster.pdf"]').textContent = texts.viewPoster;
+            
+            // Update performance chart labels
+            document.querySelectorAll('.performance-chart .text-white.text-sm').forEach((label, index) => {
+                if (index === 0) label.textContent = texts.default;
+                if (index === 1) label.textContent = texts.adsala;
+                if (index === 2) label.textContent = texts.openblas;
+                if (index === 3) label.textContent = texts.mkl;
+            });
+
+            // Update performance comparison text
+            document.querySelector('.text-gray-600.text-sm').textContent = texts.performanceComparison;
+            document.querySelector('.text-gray-900.font-medium').textContent = texts.averageSpeedup;
+
+            // Update installation steps
+            const installationSteps = document.querySelectorAll('#implementation .bg-gray-50 ol li p');
+            installationSteps[0].textContent = texts.downloadCompile;
+            installationSteps[1].textContent = texts.trainingPhase;
+            installationSteps[2].textContent = texts.mlTraining;
+            installationSteps[3].textContent = texts.readyForUse;
+
+            // Update runtime operation steps
+            const runtimeSteps = document.querySelectorAll('#implementation .mt-6 ul li');
+            runtimeSteps[0].querySelector('h4').textContent = texts.blasCall;
+            runtimeSteps[0].querySelector('p').textContent = texts.blasCallDesc;
+            runtimeSteps[1].querySelector('h4').textContent = texts.modelPrediction;
+            runtimeSteps[1].querySelector('p').textContent = texts.modelPredictionDesc;
+            runtimeSteps[2].querySelector('h4').textContent = texts.execution;
+            runtimeSteps[2].querySelector('p').textContent = texts.executionDesc;
+
+            // Update system compatibility
+            const systems = document.querySelectorAll('#performance .w-full.md\\:w-1\\/2:last-child .flex.items-start');
+            systems[0].querySelector('h4').textContent = texts.intelXeon;
+            systems[0].querySelector('p').textContent = texts.intelXeonDesc;
+            systems[1].querySelector('h4').textContent = texts.amdEpyc;
+            systems[1].querySelector('p').textContent = texts.amdEpycDesc;
+            systems[2].querySelector('h4').textContent = texts.consumerCPUs;
+            systems[2].querySelector('p').textContent = texts.consumerCPUsDesc;
+
+            // Update technical details
+            const details = document.querySelector('.technical-details');
+            if (details) {
+                const sections = details.querySelectorAll('div');
+                sections[0].querySelector('h4').textContent = texts.mlModels;
+                sections[0].querySelector('p').textContent = texts.mlModelsDesc;
+                sections[1].querySelector('h4').textContent = texts.featuresUsed;
+                sections[1].querySelector('p').textContent = texts.featuresDesc;
+                sections[2].querySelector('h4').textContent = texts.overhead;
+                sections[2].querySelector('p').textContent = texts.overheadDesc;
+            }
+
+            // Update installation tabs
+            document.querySelector('#tab-ubuntu').textContent = texts.ubuntuDebian;
+            document.querySelector('#tab-centos').textContent = texts.centosRhel;
+            document.querySelector('#tab-mac').textContent = texts.macOS;
+
+            // Update GitHub section
+            const githubSection = document.querySelector('.bg-green-500').parentElement.parentElement;
+            githubSection.querySelector('h3').textContent = texts.githubRepo;
+            githubSection.querySelector('p').textContent = texts.contributeIssues;
+            githubSection.querySelector('a').textContent = texts.viewOnGithub;
+
+            // Update footer
+            document.querySelector('footer p.text-gray-300').textContent = texts.adaptiveBlas;
+            const footerSections = document.querySelectorAll('footer .tracking-wider.uppercase');
+            footerSections[0].textContent = texts.resources;
+            footerSections[1].textContent = texts.legal;
+            footerSections[2].textContent = texts.contact;
+            footerSections[3].textContent = texts.research;
+
+            // Update footer links
+            const footerLinks = document.querySelectorAll('footer .text-base.text-gray-400');
+            footerLinks[0].textContent = texts.documentation;
+            footerLinks[1].textContent = texts.tutorials;
+            footerLinks[2].textContent = texts.apiReference;
+            footerLinks[3].textContent = texts.privacy;
+            footerLinks[4].textContent = texts.terms;
+            footerLinks[5].textContent = texts.license;
+            footerLinks[6].textContent = texts.email;
+            footerLinks[7].textContent = texts.twitter;
+            footerLinks[8].textContent = texts.githubIssues;
+            footerLinks[9].textContent = texts.paper;
+            footerLinks[10].textContent = texts.benchmarks;
+            footerLinks[11].textContent = texts.methodology;
+
+            // Update copyright
+            document.querySelector('footer .text-base.text-gray-400.text-center').textContent = texts.copyright;
+            
+            // Store language preference
+            localStorage.setItem('preferred-language', lang);
+        }
+
+        // Add click handlers for language options
+        document.querySelectorAll('.lang-option').forEach(option => {
+            option.addEventListener('click', () => {
+                switchLanguage(option.dataset.lang);
+                languageMenu.classList.add('hidden');
+            });
+        });
+
+        // Load preferred language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const preferredLanguage = localStorage.getItem('preferred-language') || 'en';
+            switchLanguage(preferredLanguage);
         });
     </script>
 </body>
