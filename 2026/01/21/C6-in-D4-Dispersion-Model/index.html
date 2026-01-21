@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Yufan Xia">
+
+
+
+
+
+
+
+<title>C6 in D4 Dispersion Model | This is Yufan Xia</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/frame.js"></script>
+    
+
+
+
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+  <!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Yufan
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Yufan</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/Projects/">Projects</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Blogs</a>
+              </li> 
+                   
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+        </div>
+        <div class="post-title">
+            
+            
+                C6 in D4 Dispersion Model
+            
+            
+        </div>
+        <span class="post-date">
+            Jan 21, 2026
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <p>Okay, here is a Mermaid diagram outlining the general workflow within the <code>src/disp/dftd4.F90</code> file for calculating the D4 dispersion energy and gradients. This focuses on the main subroutines and their interactions.</p>
+<pre class="mermaid">graph TD
+
+subgraph Initialization["Model Setup - Usually called externally first"]
+
+InitExt["External Call"] --> NM["newD4Model(...)"]
+
+NM -- "Reads Param Data" --> NM
+
+NM -- "Calculates Reference Polarizabilities" --> NM
+
+NM -- "Calculates Reference C6 Coefficients" --> NM
+
+NM --> DispM["Dispersion Model Data (dispm)"]
+
+end
+
+  
+
+subgraph MainCalculationFlow["Energy/Gradient Calculation"]
+
+Start["Start: d4_gradient_* Routine"] --> InputData{"Input: Mol, dispm, CN, q, Params"}
+
+InputData --> WR["weight_references(...)"]
+
+WR -- "Uses CN, q, zeff, gam, g_a, g_c, wf" --> WR
+
+WR --> F_zeta["zeta/dzeta funcs"]
+
+WR --> F_cngw["cngw/dcngw funcs"]
+
+WR --> WritesWeights["Writes: zetavec, zerovec, derivatives"]
+
+  
+
+InputData --> GAC6_Pair["get_atomic_c6(..., zetavec, ...)"]
+
+DispM --> GAC6_Pair
+
+WritesWeights --> GAC6_Pair
+
+GAC6_Pair --> WritesC6_Pair["Writes: c6_pair, dc6dcn_pair, dc6dq_pair"]
+
+  
+
+InputData --> DG["disp_gradient_* Routine (Pairwise E/Grad)"]
+
+WritesC6_Pair --> DG
+
+DG --> DampingFuncs["Damping Functions"]
+
+DG --> WritesE2["Writes: E_pair, dG_pair, dS_pair, dEdcn_pair, dEdq_pair"]
+
+  
+
+InputData -- "If s9 != 0" --> GAC6_ATM["get_atomic_c6(..., zerovec, ...)"]
+
+DispM --> GAC6_ATM
+
+WritesWeights --> GAC6_ATM
+
+GAC6_ATM --> WritesC6_ATM["Writes: c6_atm, dc6dcn_atm"]
+
+  
+
+InputData -- "If s9 != 0" --> AG["atm_gradient_* Routine (3-Body E/Grad)"]
+
+WritesC6_ATM --> AG
+
+AG --> DAT["deriv_atm_triple func"]
+
+AG --> TS["triple_scale func"]
+
+AG --> WritesE3["Writes: E_atm, dG_atm, dS_atm, dEdcn_atm"]
+
+  
+
+InputData --> Combine{"Combine Results"}
+
+WritesE2 --> Combine
+
+WritesE3 -- "If s9 != 0" --> Combine
+
+Combine -- "Uses dcndr, dqdr (Chain Rule)" --> Combine
+
+Combine --> FinalOutput["Output: Total E, Gradient, Sigma"]
+
+end
+
+  
+
+%% Style adjustments
+
+classDef mySubgraph fill:#f9f,stroke:#333,stroke-width:2px;
+
+class InitExt,Start,FinalOutput fill:#ccf,stroke:#333,stroke-width:2px;</pre>
+<p><strong>Explanation of the Flow:</strong></p>
+<ol>
+<li><strong>Initialization (<code>newD4Model</code>):</strong> This sets up the fundamental <code>dispm</code> data structure containing reference polarizabilities (<code>dispm%alpha</code>) and reference C6 coefficients (<code>dispm%c6</code>) based on pre-defined parameters and the chosen charge model. This is typically done once before the main SCF or geometry optimization loop.</li>
+<li><strong>Main Entry (<code>d4_gradient_*</code>):</strong> These routines (like <code>d4_gradient_neigh</code> or <code>d4_gradient_latp</code>) are the main entry points during a calculation. They take molecular geometry, pre-calculated <code>dispm</code> data, coordination numbers (<code>cn</code>), charges (<code>q</code>), and D4 parameters (<code>par</code>, <code>g_a</code>, <code>g_c</code>, <code>wf</code>) as input.</li>
+<li><strong>Weight Calculation (<code>weight_references</code>):</strong> Calculates the environment-dependent weights (<code>zetavec</code>) for each reference system of each atom, considering the atom’s current coordination number and charge. It also calculates weights for the zero-charge case (<code>zerovec</code>) and derivatives needed later. Helper functions <code>zeta</code> and <code>cngw</code> are used here.</li>
+<li><strong>Atomic C6 Calculation (Pairwise - <code>get_atomic_c6</code> with <code>zetavec</code>):</strong> Uses the calculated weights (<code>zetavec</code>) and the reference C6 values (<code>dispm%c6</code>) to compute the final, environment-dependent C6 coefficient (<code>c6_pair</code>) for each <em>pair of atoms</em>. It also computes the derivatives of these C6 values w.r.t CN (<code>dc6dcn_pair</code>) and charge (<code>dc6dq_pair</code>).</li>
+<li><strong>Pairwise Energy/Gradient (<code>disp_gradient_*</code>):</strong> Calculates the two-body dispersion energy (<code>E_pair</code>) and its geometric gradient (<code>dG_pair</code>, <code>dS_pair</code>) using the final atomic C6 values (<code>c6_pair</code>), damping functions, and interatomic distances. It also calculates the derivatives of the energy w.r.t. CN (<code>dEdcn_pair</code>) and charge (<code>dEdq_pair</code>).</li>
+<li><strong>Atomic C6 Calculation (3-Body - <code>get_atomic_c6</code> with <code>zerovec</code>):</strong> <em>If</em> the three-body term is active (<code>par%s9 /= 0.0_wp</code>), this step calculates the C6 coefficients needed for the ATM term, typically using the zero-charge weights (<code>zerovec</code>).</li>
+<li><strong>Three-Body Energy/Gradient (<code>atm_gradient_*</code>):</strong> <em>If</em> the three-body term is active, this calculates the Axilrod-Teller-Muto energy (<code>E_atm</code>) and its geometric gradient (<code>dG_atm</code>, <code>dS_atm</code>) using the appropriate C6 values (<code>c6_atm</code>). It also calculates the derivative w.r.t. CN (<code>dEdcn_atm</code>). Helper functions <code>deriv_atm_triple</code> and <code>triple_scale</code> are used.</li>
+<li><strong>Combine Results:</strong> The main <code>d4_gradient_*</code> routine sums the pairwise and (if applicable) three-body energy contributions. It combines the geometric gradients (<code>dG</code>, <code>dS</code>) with the CN/charge derivatives (<code>dEdcn</code>, <code>dEdq</code>) using the chain rule (multiplying by <code>dcndr</code>, <code>dqdr</code>, etc.) to get the final total gradient and stress tensor.</li>
+<li><strong>Output:</strong> Returns the total D4 energy, gradient, and stress tensor.</li>
+</ol>
+<p>This diagram provides a high-level overview of how data flows through the key subroutines in <code>dftd4.F90</code> to arrive at the final dispersion correction.</p>
+<h2 id="D4-dispersion">D4 dispersion</h2>
+<p>Okay, let’s break down how the force (which is the negative of the energy gradient, ( $\mathbf{F} = -\nabla E )$) is calculated in <code>src/disp/dftd4.F90</code>.</p>
+<p>The total D4 dispersion energy depends on the atomic coordinates ((\mathbf{R})) in multiple ways:</p>
+<ol>
+<li><strong>Directly:</strong> Through the distances ((r_{ij})) in the (r^{-n}) terms and the damping functions.</li>
+<li><strong>Indirectly:</strong> Through the coordination numbers ((CN)) and atomic charges ((q)), which themselves depend on the geometry ((CN(\mathbf{R}), q(\mathbf{R}))).</li>
+</ol>
+<p>Therefore, the gradient calculation uses the chain rule:</p>
+<p>$$<br>
+\nabla_{\mathbf{R}} E_{D4} = \underbrace{\frac{\partial E_{D4}}{\partial \mathbf{R}}}<em>{\text{Direct Term}} + \sum_k \underbrace{\frac{\partial E</em>{D4}}{\partial CN_k}}<em>{\text{dEdcn}} \underbrace{\nabla</em>{\mathbf{R}} CN_k}<em>{\text{dcndr}} + \sum_k \underbrace{\frac{\partial E</em>{D4}}{\partial q_k}}<em>{\text{dEdq}} \underbrace{\nabla</em>{\mathbf{R}} q_k}_{\text{dqdr}}<br>
+$$</p>
+<p>Here’s how the code calculates these terms:</p>
+<ol>
+<li>
+<p><strong>Direct Geometric Gradient ($\frac{\partial E_{D4}}{\partial \mathbf{R}}$):</strong></p>
+<ul>
+<li>This is calculated within the lower-level gradient routines: <code>disp_gradient_neigh</code>/<code>disp_gradient_latp</code> for pairwise terms and <code>atm_gradient_neigh</code>/<code>atm_gradient_latp</code> (via <code>deriv_atm_triple</code>) for three-body terms.</li>
+<li>They differentiate the damped (r^{-n}) expressions with respect to the coordinates.</li>
+<li>For example, in <code>disp_gradient_neigh</code> (line 1422), <code>ddisp</code> holds the derivative of the damped terms w.r.t (r^2), and <code>dG = -c6(iat, jat)*ddisp*rij</code> calculates the contribution to the gradient vector between atoms <code>iat</code> and <code>jat</code>.</li>
+<li>These direct contributions (<code>dG</code>) are accumulated directly into the <code>gradient</code> array (e.g., lines 1429-1430).</li>
+</ul>
+</li>
+<li>
+<p><strong>Energy Derivatives w.r.t CN and Charge (($\frac{\partial E_{D4}}{\partial CN_k}) and (\frac{\partial E_{D4}}{\partial q_k}$)):</strong></p>
+<ul>
+<li>These terms represent how sensitive the dispersion energy is to changes in coordination number or charge <em>at a fixed geometry</em>.</li>
+<li>They are calculated within the <code>disp_gradient_neigh</code>/<code>disp_gradient_latp</code> routines using the previously computed <code>dc6dcn</code> and <code>dc6dq</code>.</li>
+<li>Example from <code>disp_gradient_neigh</code> (lines 1420-1421, 1425-1426):<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">! dEdcn(k) accumulates dE/dCN_k</span></span><br><span class="line">dEdcn(iat) = dEdcn(iat) - dc6dcn(iat, jat) * disp</span><br><span class="line"><span class="comment">! dEdq(k) accumulates dE/dq_k</span></span><br><span class="line">dEdq(iat) = dEdq(iat) - dc6dq(iat, jat) * disp</span><br><span class="line"><span class="comment">! ... symmetric terms for jat ...</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>Similarly, the three-body gradient routines (<code>atm_gradient_*</code>) accumulate contributions to <code>dEdcn</code> (lines 1614-1616, via <code>dCN</code> from <code>deriv_atm_triple</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Chain Rule Application (Indirect Terms):</strong></p>
+<ul>
+<li>The geometric derivatives of CN (( \nabla_{\mathbf{R}} CN_k )) and charge (( \nabla_{\mathbf{R}} q_k )) are provided as input arrays (<code>dcndr</code> and <code>dqdr</code>, respectively).</li>
+<li>The final application of the chain rule (summing the products) happens in the main wrapper routines (<code>d4_full_gradient_neigh</code>, <code>d4_gradient_neigh</code>, etc.).</li>
+<li>Matrix-vector multiplications (<code>mctc_gemv</code>) perform this summation efficiently. Example from <code>d4_full_gradient_neigh</code> (lines 1235-1240):<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">! gradient = gradient + dcndr^T * dEdcn</span></span><br><span class="line"><span class="keyword">call</span> mctc_gemv(dcndr, dEdcn, gradient, beta=<span class="number">1.0_wp</span>)</span><br><span class="line"><span class="comment">! gradient = gradient + dqdr^T * dEdq  (if dqdr is present)</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">present</span>(dqdr)) <span class="keyword">then</span></span><br><span class="line">   <span class="keyword">call</span> mctc_gemv(dqdr, dEdq, gradient, beta=<span class="number">1.0_wp</span>)</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span></span><br><span class="line"><span class="comment">! ... similar terms for stress tensor sigma using dcndL, dqdL ...</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>The <code>beta=1.0_wp</code> argument means the result is <em>added</em> to the existing <code>gradient</code> array (which already contains the direct geometric derivative from step 1).</li>
+</ul>
+</li>
+</ol>
+<p><strong>In summary:</strong></p>
+<p>The final <code>gradient</code> array accumulated in the main <code>d4_*_gradient_*</code> routines contains the total gradient of the D4 energy (($\nabla_{\mathbf{R}} E_{D4})$). It’s computed by summing:</p>
+<ul>
+<li>The direct derivatives from differentiating distance-dependent terms.</li>
+<li>The indirect contributions calculated via the chain rule, using the energy sensitivities (<code>dEdcn</code>, <code>dEdq</code>) multiplied by the geometric derivatives of CN and charge (<code>dcndr</code>, <code>dqdr</code>).</li>
+</ul>
+<p>The force on each atom is then simply the negative of the corresponding elements in this final <code>gradient</code> array.</p>
+<pre class="mermaid">subgraph one
+a1-->a2
+end</pre>
+
+</div> 
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2026/01/21/%E8%8C%83%E5%BE%B7%E5%8D%8E%E5%8A%9B%E5%92%8C%E8%89%B2%E6%95%A3%E5%8A%9B/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+                 | 
+            
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+  </body>
+</html>

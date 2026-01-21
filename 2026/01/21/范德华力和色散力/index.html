@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Yufan Xia">
+
+
+
+
+
+
+
+<title>范德华力和色散力 | This is Yufan Xia</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/frame.js"></script>
+    
+
+
+
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+  <!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.1.1"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            Yufan
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">Yufan</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/Projects/">Projects</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">Blogs</a>
+              </li> 
+                   
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+        </div>
+        <div class="post-title">
+            
+            
+                范德华力和色散力
+            
+            
+        </div>
+        <span class="post-date">
+            Jan 21, 2026
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <div class="h-line-primary"></div>
+              
+    </div>
+</div>
+    <div class="post-content">
+    <h1>Electrostatics、Dispersion 和 Van der Waals Force 的关系详解</h1>
+<hr>
+<h2 id="1-核心关系图">1. 核心关系图</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Van der Waals Force (范德华力) - 总称</span><br><span class="line">    │</span><br><span class="line">    ├─── Electrostatic Interactions (静电相互作用)</span><br><span class="line">    │    ├─ Charge-charge (电荷-电荷)</span><br><span class="line">    │    ├─ Charge-dipole (电荷-偶极)</span><br><span class="line">    │    └─ Dipole-dipole (偶极-偶极, Keesom)</span><br><span class="line">    │</span><br><span class="line">    ├─── Induction (诱导作用, Debye)</span><br><span class="line">    │    ├─ Charge-induced dipole</span><br><span class="line">    │    └─ Dipole-induced dipole</span><br><span class="line">    │</span><br><span class="line">    └─── Dispersion (色散力, London)</span><br><span class="line">         └─ Induced dipole-induced dipole</span><br><span class="line">              (瞬时偶极-诱导偶极)</span><br></pre></td></tr></table></figure>
+<p><strong>关键点</strong>：</p>
+<ul>
+<li><strong>Van der Waals = Electrostatics + Induction + Dispersion</strong></li>
+<li>Dispersion 是 Van der Waals 的一部分</li>
+<li>Electrostatics 也是 Van der Waals 的一部分（狭义）</li>
+</ul>
+<hr>
+<h2 id="2-详细定义">2. 详细定义</h2>
+<h3 id="Van-der-Waals-Force（范德华力）">Van der Waals Force（范德华力）</h3>
+<p><strong>定义</strong>：所有分子间的非共价相互作用（除氢键外）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">E_vdW = E_electrostatic + E_induction + E_dispersion</span><br></pre></td></tr></table></figure>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>距离依赖：通常 ∝ 1/r⁶</li>
+<li>弱相互作用：0.5 - 5 kcal/mol</li>
+<li>短程力：几个 Å 范围内有效</li>
+</ul>
+<hr>
+<h3 id="Electrostatic-Interactions（静电相互作用）">Electrostatic Interactions（静电相互作用）</h3>
+<p><strong>定义</strong>：永久电荷/偶极之间的相互作用</p>
+<h4 id="类型-1-Charge-Charge（离子相互作用）">类型 1: Charge-Charge（离子相互作用）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">E = k·q₁·q₂/r</span><br><span class="line"></span><br><span class="line">例子：Na⁺ ··· Cl⁻</span><br><span class="line">强度：~100 kcal/mol</span><br><span class="line">距离：∝ 1/r</span><br></pre></td></tr></table></figure>
+<h4 id="类型-2-Charge-Dipole">类型 2: Charge-Dipole</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">E ∝ q·μ/r²</span><br><span class="line"></span><br><span class="line">例子：Na⁺ ··· H₂O</span><br><span class="line">强度：~10-20 kcal/mol</span><br><span class="line">距离：∝ 1/r²</span><br></pre></td></tr></table></figure>
+<h4 id="类型-3-Dipole-Dipole（Keesom-力）">类型 3: Dipole-Dipole（Keesom 力）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">E ∝ μ₁·μ₂/r³  (固定取向)</span><br><span class="line">E ∝ μ₁²·μ₂²/(kT·r⁶)  (平均取向)</span><br><span class="line"></span><br><span class="line">例子：HCl ··· HCl</span><br><span class="line">强度：~2-5 kcal/mol</span><br><span class="line">距离：∝ 1/r⁶ (平均)</span><br></pre></td></tr></table></figure>
+<p><strong>关键</strong>：</p>
+<ul>
+<li>✅ 需要<strong>永久</strong>电荷或偶极</li>
+<li>✅ 方向性强</li>
+<li>❌ 非极性分子没有这个作用</li>
+</ul>
+<hr>
+<h3 id="Induction（诱导作用-Debye-力）">Induction（诱导作用, Debye 力）</h3>
+<p><strong>定义</strong>：永久电荷/偶极诱导瞬时偶极</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">E_induction ∝ (q²·α)/r⁴  (charge-induced)</span><br><span class="line">E_induction ∝ (μ²·α)/r⁶  (dipole-induced)</span><br><span class="line"></span><br><span class="line">α = 极化率</span><br></pre></td></tr></table></figure>
+<p><strong>例子</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HCl (永久偶极) ··· Ar (被诱导产生偶极)</span><br><span class="line"></span><br><span class="line">HCl 的永久偶极 → 使 Ar 的电子云变形 → 产生瞬时偶极 → 相互吸引</span><br></pre></td></tr></table></figure>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>需要一方有永久偶极</li>
+<li>另一方可以是非极性（只要可极化）</li>
+<li>强度：~0.5-2 kcal/mol</li>
+</ul>
+<hr>
+<h3 id="Dispersion（色散力-London-力）">Dispersion（色散力, London 力）</h3>
+<p><strong>定义</strong>：瞬时偶极-诱导偶极相互作用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">E_dispersion ≈ -(3/4)·(I·α²)/r⁶</span><br><span class="line"></span><br><span class="line">I = 电离能</span><br><span class="line">α = 极化率</span><br><span class="line">r = 距离</span><br></pre></td></tr></table></figure>
+<p><strong>物理图像</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">时刻 t₁:  Ar₁ 电子云瞬间不对称 → 产生瞬时偶极</span><br><span class="line">          ↓</span><br><span class="line">时刻 t₂:  这个瞬时偶极诱导 Ar₂ 产生偶极</span><br><span class="line">          ↓</span><br><span class="line">时刻 t₃:  两个偶极相互吸引</span><br><span class="line">          ↓</span><br><span class="line">结果:     净吸引力（尽管电子云不停波动）</span><br></pre></td></tr></table></figure>
+<p><strong>例子</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ar ··· Ar   (都是非极性，但有色散力)</span><br><span class="line">CH₄ ··· CH₄ (非极性分子也能相互吸引)</span><br></pre></td></tr></table></figure>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>✅ <strong>所有分子都有</strong>（包括非极性）</li>
+<li>✅ 与极化率和电子数正相关</li>
+<li>✅ 距离：∝ 1/r⁶</li>
+<li>强度：~0.5-5 kcal/mol</li>
+</ul>
+<hr>
+<h2 id="3-三者的关系和区别">3. 三者的关系和区别</h2>
+<h3 id="包含关系">包含关系</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────┐</span><br><span class="line">│  Van der Waals Force (广义范德华力)      │</span><br><span class="line">│  ┌─────────────────────────────────┐   │</span><br><span class="line">│  │ Electrostatics (永久-永久)       │   │</span><br><span class="line">│  │  - Charge-charge                │   │</span><br><span class="line">│  │  - Charge-dipole                │   │</span><br><span class="line">│  │  - Dipole-dipole (Keesom)       │   │</span><br><span class="line">│  └─────────────────────────────────┘   │</span><br><span class="line">│  ┌─────────────────────────────────┐   │</span><br><span class="line">│  │ Induction (永久-诱导, Debye)     │   │</span><br><span class="line">│  └─────────────────────────────────┘   │</span><br><span class="line">│  ┌─────────────────────────────────┐   │</span><br><span class="line">│  │ Dispersion (瞬时-诱导, London)   │   │</span><br><span class="line">│  └─────────────────────────────────┘   │</span><br><span class="line">└─────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="对比表">对比表</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Electrostatics</th>
+<th>Induction</th>
+<th>Dispersion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>偶极类型</strong></td>
+<td>永久-永久</td>
+<td>永久-诱导</td>
+<td>瞬时-诱导</td>
+</tr>
+<tr>
+<td><strong>需要极性？</strong></td>
+<td>✅ 至少一方</td>
+<td>✅ 至少一方</td>
+<td>❌ 非极性也有</td>
+</tr>
+<tr>
+<td><strong>距离依赖</strong></td>
+<td>1/r, 1/r², 1/r⁶</td>
+<td>1/r⁴, 1/r⁶</td>
+<td>1/r⁶</td>
+</tr>
+<tr>
+<td><strong>方向性</strong></td>
+<td>强</td>
+<td>中</td>
+<td>弱</td>
+</tr>
+<tr>
+<td><strong>温度依赖</strong></td>
+<td>有（Keesom）</td>
+<td>弱</td>
+<td>无</td>
+</tr>
+<tr>
+<td><strong>相对强度</strong></td>
+<td>强 → 中</td>
+<td>中</td>
+<td>弱 → 中</td>
+</tr>
+<tr>
+<td><strong>典型例子</strong></td>
+<td>HCl···HCl</td>
+<td>HCl···Ar</td>
+<td>Ar···Ar</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="不同分子的贡献">不同分子的贡献</h3>
+<h4 id="1-非极性分子（Ar-CH₄-C₆H₆）">1. 非极性分子（Ar, CH₄, C₆H₆）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">E_total = E_dispersion 只有</span><br><span class="line"></span><br><span class="line">例子：Ar-Ar 二聚体</span><br><span class="line">- Electrostatic: 0</span><br><span class="line">- Induction: 0</span><br><span class="line">- Dispersion: -0.3 kcal/mol</span><br><span class="line">总计：-0.3 kcal/mol</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="2-极性分子（H₂O-HCl）">2. 极性分子（H₂O, HCl）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">E_total = E_electrostatic + E_induction + E_dispersion</span><br><span class="line"></span><br><span class="line">例子：H₂O-H₂O（非氢键）</span><br><span class="line">- Electrostatic (dipole-dipole): -2.5 kcal/mol  (40%)</span><br><span class="line">- Induction: -0.8 kcal/mol                      (13%)</span><br><span class="line">- Dispersion: -3.0 kcal/mol                     (47%)</span><br><span class="line">总计：-6.3 kcal/mol</span><br></pre></td></tr></table></figure>
+<p><strong>惊讶发现</strong>：即使对极性分子，色散力也占了一半！</p>
+<hr>
+<h4 id="3-芳香环-π-π-堆积">3. 芳香环 π-π 堆积</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">苯二聚体（平行堆积）：</span><br><span class="line">- Electrostatic: +0.5 kcal/mol  (排斥！四极矩)</span><br><span class="line">- Induction: -0.3 kcal/mol</span><br><span class="line">- Dispersion: -2.5 kcal/mol     (主要贡献)</span><br><span class="line">总计：-2.3 kcal/mol</span><br></pre></td></tr></table></figure>
+<p><strong>结论</strong>：π-π 堆积主要靠色散力！</p>
+<hr>
+<h2 id="4-物理本质的区别">4. 物理本质的区别</h2>
+<h3 id="Electrostatics：经典静电">Electrostatics：经典静电</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">库仑定律：F = k·q₁·q₂/r²</span><br><span class="line"></span><br><span class="line">物理本质：</span><br><span class="line">- 电荷/偶极的经典相互作用</span><br><span class="line">- 可以用经典电磁学完全描述</span><br><span class="line">- 不需要量子力学</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Dispersion：量子效应">Dispersion：量子效应</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">量子力学起源：</span><br><span class="line">- 电子波函数的瞬时涨落</span><br><span class="line">- 零点能导致的电子云振荡</span><br><span class="line">- 需要薛定谔方程才能解释</span><br><span class="line"></span><br><span class="line">经典物理无法解释：</span><br><span class="line">- 为什么非极性分子能相互吸引？</span><br><span class="line">- 经典：无永久偶极 → 无相互作用 ❌</span><br><span class="line">- 量子：瞬时偶极涨落 → 有相互作用 ✅</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="5-实际例子分析">5. 实际例子分析</h2>
+<h3 id="例子-1：稀有气体-Ar-Ar">例子 1：稀有气体 (Ar-Ar)</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│ Ar ··· Ar 相互作用能分解            │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Electrostatic:     0.00 kcal/mol    │</span><br><span class="line">│ Induction:         0.00 kcal/mol    │</span><br><span class="line">│ Dispersion:       -0.28 kcal/mol    │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Total:            -0.28 kcal/mol    │</span><br><span class="line">└─────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+<p><strong>100% 色散力</strong></p>
+<hr>
+<h3 id="例子-2：水二聚体（非氢键几何）">例子 2：水二聚体（非氢键几何）</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│ H₂O ··· H₂O 能量分解               │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Electrostatic:    -2.50 kcal/mol    │ 40%</span><br><span class="line">│ Induction:        -0.80 kcal/mol    │ 13%</span><br><span class="line">│ Dispersion:       -3.00 kcal/mol    │ 47%</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Total:            -6.30 kcal/mol    │</span><br><span class="line">└─────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+<p><strong>色散力仍然占一半！</strong></p>
+<hr>
+<h3 id="例子-3：离子-水（Na⁺-H₂O）">例子 3：离子-水（Na⁺-H₂O）</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│ Na⁺ ··· H₂O 能量分解               │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Electrostatic:   -22.0 kcal/mol     │ 88%</span><br><span class="line">│ Induction:        -2.5 kcal/mol     │ 10%</span><br><span class="line">│ Dispersion:       -0.5 kcal/mol     │  2%</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Total:           -25.0 kcal/mol     │</span><br><span class="line">└─────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+<p><strong>静电主导</strong></p>
+<hr>
+<h3 id="例子-4：DNA-碱基堆积（GC）">例子 4：DNA 碱基堆积（GC）</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│ G-C π-π stacking 能量分解           │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Electrostatic:    -5.0 kcal/mol     │ 35%</span><br><span class="line">│ Induction:        -1.5 kcal/mol     │ 10%</span><br><span class="line">│ Dispersion:       -8.0 kcal/mol     │ 55%</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│ Total:           -14.5 kcal/mol     │</span><br><span class="line">└─────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+<p><strong>色散力最重要！</strong></p>
+<hr>
+<h2 id="6-DFT-中的处理">6. DFT 中的处理</h2>
+<h3 id="传统-DFT-的问题">传统 DFT 的问题</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">B3LYP, PBE 等：</span><br><span class="line">- ✅ 正确处理 Electrostatics（交换-相关泛函）</span><br><span class="line">- ✅ 正确处理 Induction（密度响应）</span><br><span class="line">- ❌ 完全忽略 Dispersion（长程相关缺失）</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">苯二聚体：</span><br><span class="line">实验：      -2.3 kcal/mol</span><br><span class="line">B3LYP:      +0.5 kcal/mol  (排斥！)</span><br><span class="line">PBE:        +1.2 kcal/mol  (排斥！)</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="色散校正-DFT">色散校正 DFT</h3>
+<h4 id="DFT-D3（经验色散）">DFT-D3（经验色散）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">E_total = E_DFT + E_disp</span><br><span class="line"></span><br><span class="line">E_disp = -∑ᵢⱼ [C₆ⁱʲ/(r⁶ + R₀⁶)] · f_damp(r)</span><br><span class="line"></span><br><span class="line">- DFT 部分：处理 Electrostatics + Induction</span><br><span class="line">- D3 部分：添加 Dispersion</span><br></pre></td></tr></table></figure>
+<p><strong>例子</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">B3LYP:         +0.5 kcal/mol</span><br><span class="line">B3LYP-D3:      -2.4 kcal/mol  (接近实验！)</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="范德华泛函（vdW-DF-VV10）">范德华泛函（vdW-DF, VV10）</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">E_xc = E_x + E_c^local + E_c^nl</span><br><span class="line"></span><br><span class="line">E_c^nl = 非局域相关（处理色散）</span><br></pre></td></tr></table></figure>
+<p><strong>例子</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ωB97M-V:</span><br><span class="line">- ω 范围分离：Electrostatics</span><br><span class="line">- M meta-GGA：Induction</span><br><span class="line">- V VV10：Dispersion</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="7-能量分解分析（EDA）">7. 能量分解分析（EDA）</h2>
+<h3 id="SAPT（对称适应微扰理论）">SAPT（对称适应微扰理论）</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">E_int = E_elst + E_exch + E_ind + E_disp</span><br><span class="line">        └─静电─┘  └─泡利排斥  └诱导┘  └色散┘</span><br></pre></td></tr></table></figure>
+<p><strong>Q-Chem 中使用</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$rem</span><br><span class="line">JOBTYPE SAPT</span><br><span class="line">$end</span><br></pre></td></tr></table></figure>
+<p><strong>输出</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SAPT Energy Decomposition:</span><br><span class="line">Electrostatics:    -5.23 kcal/mol</span><br><span class="line">Exchange:          +8.45 kcal/mol</span><br><span class="line">Induction:         -1.34 kcal/mol</span><br><span class="line">Dispersion:        -6.78 kcal/mol</span><br><span class="line">-----------------------------------</span><br><span class="line">Total SAPT:        -4.90 kcal/mol</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="8-实际应用中的重要性">8. 实际应用中的重要性</h2>
+<h3 id="蛋白质折叠">蛋白质折叠</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">二级结构：</span><br><span class="line">- α-螺旋：Electrostatics (氢键) 主导</span><br><span class="line">- β-折叠：Electrostatics + Dispersion</span><br><span class="line"></span><br><span class="line">三级结构：</span><br><span class="line">- 疏水核心：Dispersion 主导（非极性侧链）</span><br><span class="line">- 表面：Electrostatics（极性残基-水）</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="药物设计">药物设计</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配体-受体结合：</span><br><span class="line">- 静电互补：Electrostatics (盐桥、氢键)</span><br><span class="line">- 疏水口袋：Dispersion (芳香环堆积)</span><br><span class="line">- 总结合能：通常各占 30-50%</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="材料科学">材料科学</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">石墨烯层间作用：</span><br><span class="line">- 100% Dispersion (非极性)</span><br><span class="line"></span><br><span class="line">分子晶体：</span><br><span class="line">- 极性分子：Electrostatics + Dispersion</span><br><span class="line">- 非极性分子：纯 Dispersion</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="9-常见误区">9. 常见误区</h2>
+<h3 id="❌-误区-1：-Van-der-Waals-Dispersion">❌ 误区 1：&quot;Van der Waals = Dispersion&quot;</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">错误：范德华力就是色散力</span><br><span class="line">正确：色散力是范德华力的一部分</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="❌-误区-2：-非极性分子无静电作用">❌ 误区 2：&quot;非极性分子无静电作用&quot;</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">错误：CH₄ 无永久偶极 → 无静电作用</span><br><span class="line">正确：有多极矩（四极矩等），仍有静电相互作用</span><br><span class="line">      但通常比色散力弱得多</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="❌-误区-3：-DFT-能处理所有非共价作用">❌ 误区 3：&quot;DFT 能处理所有非共价作用&quot;</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">错误：B3LYP 能算范德华复合物</span><br><span class="line">正确：需要色散校正（D3, D4, VV10）</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="10-总结图表">10. 总结图表</h2>
+<h3 id="力的层次结构">力的层次结构</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">分子间相互作用力</span><br><span class="line">├─ 共价键 (50-100 kcal/mol)</span><br><span class="line">│   └─ 不在此讨论范围</span><br><span class="line">│</span><br><span class="line">├─ 氢键 (5-40 kcal/mol)</span><br><span class="line">│   └─ 特殊的强静电作用</span><br><span class="line">│</span><br><span class="line">└─ Van der Waals Force (0.5-5 kcal/mol)</span><br><span class="line">    ├─ Electrostatic (永久-永久)</span><br><span class="line">    │   ├─ Charge-charge (∝ 1/r)</span><br><span class="line">    │   ├─ Charge-dipole (∝ 1/r²)</span><br><span class="line">    │   └─ Dipole-dipole (∝ 1/r⁶)</span><br><span class="line">    │</span><br><span class="line">    ├─ Induction (永久-诱导)</span><br><span class="line">    │   └─ Debye force (∝ 1/r⁶)</span><br><span class="line">    │</span><br><span class="line">    └─ Dispersion (瞬时-诱导)</span><br><span class="line">        └─ London force (∝ 1/r⁶)</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="关键要点">关键要点</h3>
+<ol>
+<li>
+<p><strong>包含关系</strong>：</p>
+<ul>
+<li>Van der Waals ⊃ Electrostatics + Induction + Dispersion</li>
+</ul>
+</li>
+<li>
+<p><strong>物理本质</strong>：</p>
+<ul>
+<li>Electrostatics：经典静电</li>
+<li>Dispersion：量子涨落</li>
+</ul>
+</li>
+<li>
+<p><strong>普遍性</strong>：</p>
+<ul>
+<li>Electrostatics：需要极性</li>
+<li>Dispersion：所有分子都有</li>
+</ul>
+</li>
+<li>
+<p><strong>相对重要性</strong>：</p>
+<ul>
+<li>非极性：Dispersion 100%</li>
+<li>极性：Dispersion 通常仍占 40-50%</li>
+<li>离子：Electrostatics 主导</li>
+</ul>
+</li>
+<li>
+<p><strong>DFT 处理</strong>：</p>
+<ul>
+<li>传统 DFT：Electrostatics ✅, Dispersion ❌</li>
+<li>需要色散校正：DFT-D3, VV10</li>
+</ul>
+</li>
+</ol>
+<p>希望这个详细解释能帮助你理解三者的关系！有具体问题吗？</p>
+
+</div> 
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2026/01/21/C6-in-D4-Dispersion-Model/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2026/01/21/NN-D4/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+                 | 
+            
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+  </body>
+</html>

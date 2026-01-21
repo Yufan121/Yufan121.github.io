@@ -241,7 +241,7 @@ body {
   content: '';
   width: 100%;
   height: 100vh;
-  border: 4px #000 solid;
+  border: 3px #000 solid;
   position: fixed;
   top: 0;
   left: 0;
@@ -257,6 +257,12 @@ body {
   flex-grow: 1;
   padding: 0;
   margin: 0;
+}
+.profile-publications {
+  clear: both;
+}
+.profile-publications {
+  display: block;
 }
 div {
   display: block;
@@ -278,7 +284,7 @@ a {
 }
 body {
   font-family: 'Inter', 'Noto Sans SC', helvetica, arial;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5rem;
   color: #000;
@@ -398,7 +404,7 @@ body {
 .year-title {
   margin-top: 3.5rem;
   margin-bottom: 0.75rem;
-  font-size: 1.75rem;
+  font-size: 1.5625rem;
   font-weight: 700;
   line-height: 2.25rem;
   color: #ddd;
@@ -412,7 +418,7 @@ body {
 .post-list-item .post-title {
   flex-grow: 1;
   font-family: 'Inter', 'Noto Sans SC', helvetica, arial;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5rem;
   color: #000;
@@ -422,7 +428,7 @@ body {
   margin-left: 1.5rem;
   min-width: 8rem;
   text-align: right;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.25rem;
   color: #000;
@@ -461,13 +467,13 @@ body {
 }
 .post-gallery-item .post-info .post-title {
   margin-bottom: 0.75rem;
-  font-size: 1.75rem;
+  font-size: 1.5625rem;
   font-weight: 700;
   line-height: 2.25rem;
   color: #000;
 }
 .post-gallery-item .post-info .post-date {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.25rem;
   color: #000;
@@ -553,17 +559,14 @@ body {
   margin-top: 0;
   margin-bottom: 2rem;
 }
+.profile .profile-content .profile-self-intro {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
 .profile .profile-content .profile-title {
-  font-size: 1.75rem;
+  font-size: 1.5625rem;
   font-weight: 700;
   line-height: 2.25rem;
-  color: #000;
-}
-.profile .profile-content .profile-body {
-  font-family: 'Inter', 'Noto Sans SC', helvetica, arial;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
   color: #000;
 }
 .profile .profile-content .profile-link {
@@ -602,63 +605,63 @@ h6 {
   margin-bottom: 0.75rem;
 }
 h1 {
-  font-size: 1.75rem;
+  font-size: 1.5625rem;
   font-weight: 700;
   line-height: 2.25rem;
   color: #000;
 }
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.3125rem;
   font-weight: 700;
   line-height: 2rem;
   color: #000;
 }
 h3 {
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   line-height: 1.5rem;
   color: #000;
 }
 h4 {
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.25rem;
   color: #000;
 }
 h5 {
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   line-height: 1.25rem;
   color: #000;
 }
 h6 {
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.25rem;
   color: #000;
 }
 p {
   font-family: 'Inter', 'Noto Sans SC', helvetica, arial;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5rem;
   color: #000;
 }
 strong {
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.5rem;
   color: #000;
 }
 em {
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   font-style: italic;
   line-height: 1.5rem;
   color: #000;
 }
 del {
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5rem;
   text-decoration: line-through;
@@ -696,7 +699,7 @@ blockquote blockquote {
 }
 .post-content li {
   font-family: 'Inter', 'Noto Sans SC', helvetica, arial;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.5rem;
   color: #000;
@@ -731,7 +734,7 @@ blockquote blockquote {
 }
 dl dt {
   padding: 0.5rem 0;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.5rem;
   color: #000;
@@ -752,13 +755,13 @@ dl dd {
 }
 .post-head .post-info .post-title {
   margin-bottom: 0.75rem;
-  font-size: 1.75rem;
+  font-size: 1.5625rem;
   font-weight: 700;
   line-height: 2.25rem;
   color: #000;
 }
 .post-head .post-info .post-date {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.25rem;
   color: #000;
@@ -815,18 +818,18 @@ dl dd {
 }
 .vcontent p {
   margin-top: 0 !important;
-  font-size: 0.875rem !important;
+  font-size: 0.75rem !important;
   color: #000 !important;
 }
 code {
   font-family: 'Roboto Mono', menlo, monospace;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   line-height: 1rem;
   color: #0177aa;
 }
 .code pre span {
   font-family: 'Roboto Mono', menlo, monospace;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   line-height: 1rem;
   color: #7e7e7e;
 }
@@ -844,7 +847,7 @@ td.gutter {
 }
 td.gutter span {
   font-family: 'Roboto Mono', menlo, monospace;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   line-height: 1rem;
   color: #bababa;
 }
@@ -1045,7 +1048,7 @@ hr {
   color: #bababa;
 }
 .post-tag {
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   font-weight: 500;
   line-height: 1rem;
   border: 1px solid #000;

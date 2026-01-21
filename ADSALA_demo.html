@@ -65,8 +65,7 @@
     <!-- Hero Section -->
     <div class="hero-gradient text-white">
         <div class="max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-                <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
+            <div class="sm:text-center md:max-w-2xl md:mx-auto lg:text-left">
                     <h1 class="text-4xl tracking-tight font-extrabold sm:text-5xl">
                         <span class="block">Optimizing BLAS Level 3</span>
                         <span class="block text-blue-200">with Machine Learning</span>
@@ -88,35 +87,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
-                    <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md overflow-hidden">
-                        <div class="performance-chart flex items-end">
-                            <div class="w-full flex justify-between px-6 pb-4">
-                                <div class="flex flex-col items-center">
-                                    <div class="h-40 bg-white w-8 rounded-t"></div>
-                                    <span class="text-white text-sm mt-2">Default</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="h-60 bg-white w-8 rounded-t"></div>
-                                    <span class="text-white text-sm mt-2">ADSALA</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="h-32 bg-white w-8 rounded-t"></div>
-                                    <span class="text-white text-sm mt-2">OpenBLAS</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <div class="h-48 bg-white w-8 rounded-t"></div>
-                                    <span class="text-white text-sm mt-2">MKL</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white px-6 py-4">
-                            <p class="text-gray-600 text-sm">Performance comparison on Intel Xeon Gold 6248R (3.0GHz)</p>
-                            <p class="text-gray-900 font-medium mt-1">Average 2.1× speedup over default configuration</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -337,28 +307,7 @@
                 </div>
 
                 <div class="w-full md:w-1/2 mt-6 md:mt-0">
-                    <div class="bg-gray-800 p-6 rounded-lg code-block">
-                        <div class="flex items-center text-gray-400 mb-4">
-                            <div class="h-3 w-3 rounded-full bg-red-500 mr-2"></div>
-                            <div class="h-3 w-3 rounded-full bg-yellow-500 mr-2"></div>
-                            <div class="h-3 w-3 rounded-full bg-green-500 mr-4"></div>
-                            <span class="text-sm">adsala_install.sh</span>
-                        </div>
-                        <pre class="text-green-400 overflow-x-auto"><code># Installation and training process
-./configure --prefix=/usr/local/adsala
-make
-make train   # Executes benchmark suite
-make install # Installs optimized library
-
-# Training output example
-[ADSALA] Training on Intel Xeon Gold 6248R
-[ADSALA] Benchmarking DGEMM... 2.4× potential
-[ADSALA] Benchmarking DSYMM... 1.9× potential
-[ADSALA] Generated optimization models
-[ADSALA] Installation complete</code></pre>
-                    </div>
-
-                    <div class="mt-6 bg-gray-50 p-6 rounded-lg">
+                    <div class="bg-gray-50 p-6 rounded-lg">
                         <h3 class="text-lg font-medium text-gray-900">Technical Details</h3>
                         <div class="mt-4 space-y-4">
                             <div>
@@ -388,41 +337,6 @@ make install # Installs optimized library
                 <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                     Download and Installation
                 </p>
-            </div>
-
-            <div class="mt-10 sm:mt-12">
-                <div class="bg-white shadow overflow-hidden rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Install via package manager</h3>
-                        <div class="mt-2 max-w-xl text-sm text-gray-500">
-                            <p>ADSALA is available through popular package managers for easy installation.</p>
-                        </div>
-                        <div class="mt-5">
-                            <div class="rounded-md shadow-sm">
-                                <div class="bg-gray-50 p-4 rounded code-block">
-                                    <div class="flex space-x-4">
-                                        <button id="tab-ubuntu" class="px-3 py-1 font-medium text-blue-600 border-b-2 border-blue-600">Ubuntu/Debian</button>
-                                        <button id="tab-centos" class="px-3 py-1 font-medium text-gray-500 hover:text-gray-700">CentOS/RHEL</button>
-                                        <button id="tab-mac" class="px-3 py-1 font-medium text-gray-500 hover:text-gray-700">macOS</button>
-                                    </div>
-                                    <div id="content-ubuntu" class="mt-3">
-                                        <pre class="text-gray-800"><code>sudo add-apt-repository ppa:adsala/optimized-blas
-sudo apt-get update
-sudo apt-get install libadsala</code></pre>
-                                    </div>
-                                    <div id="content-centos" class="mt-3 hidden">
-                                        <pre class="text-gray-800"><code>sudo yum-config-manager --add-repo https://adsala.org/repo/centos/adsala.repo
-sudo yum install libadsala</code></pre>
-                                    </div>
-                                    <div id="content-mac" class="mt-3 hidden">
-                                        <pre class="text-gray-800"><code>brew tap adsala/optimized-blas
-brew install libadsala</code></pre>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -673,30 +587,6 @@ brew install libadsala</code></pre>
     </footer>
 
     <script>
-        // Tab switching for installation instructions
-        document.querySelectorAll('[id^="tab-"]').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Hide all content
-                document.querySelectorAll('[id^="content-"]').forEach(content => {
-                    content.classList.add('hidden');
-                });
-                
-                // Remove active state from all tabs
-                document.querySelectorAll('[id^="tab-"]').forEach(t => {
-                    t.classList.remove('text-blue-600', 'border-blue-600');
-                    t.classList.add('text-gray-500', 'hover:text-gray-700');
-                });
-                
-                // Show selected content
-                const contentId = tab.id.replace('tab-', 'content-');
-                document.getElementById(contentId).classList.remove('hidden');
-                
-                // Set active state on selected tab
-                tab.classList.remove('text-gray-500', 'hover:text-gray-700');
-                tab.classList.add('text-blue-600', 'border-blue-600');
-            });
-        });
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -743,8 +633,8 @@ brew install libadsala</code></pre>
         // Performance data (speedup factors relative to default configuration)
         const matrixSizes = ['256×256', '512×512', '1024×1024', '2048×2048', '4096×4096'];
         const performanceData = {
-            adsalaMKL: [45.0, 28.0, 12.0, 2.8, 2.1],
-            adsalaBLIS: [38.0, 25.0, 10.0, 2.5, 1.9]
+            adsalaMKL: [4.50, 2.80, 1.20, 0.28, 0.21],
+            adsalaBLIS: [3.80, 2.50, 1.00, 0.25, 0.19]
         };
 
         new Chart(ctx, {
@@ -799,7 +689,7 @@ brew install libadsala</code></pre>
                 scales: {
                     y: {
                         beginAtZero: true,
-                        suggestedMax: 50,
+                        suggestedMax: 5,
                         title: {
                             display: true,
                             text: 'Speedup Factor'
@@ -976,11 +866,6 @@ brew install libadsala</code></pre>
                 sections[2].querySelector('h4').textContent = texts.overhead;
                 sections[2].querySelector('p').textContent = texts.overheadDesc;
             }
-
-            // Update installation tabs
-            document.querySelector('#tab-ubuntu').textContent = texts.ubuntuDebian;
-            document.querySelector('#tab-centos').textContent = texts.centosRhel;
-            document.querySelector('#tab-mac').textContent = texts.macOS;
 
             // Update GitHub section
             const githubSection = document.querySelector('.bg-green-500').parentElement.parentElement;

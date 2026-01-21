@@ -45,6 +45,19 @@
 
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
@@ -133,13 +146,16 @@
     </div>
 </div>
     <div class="post-content">
-    <h1 id="Keras"><a href="#Keras" class="headerlink" title="Keras"></a>Keras</h1><ul>
+    <h1>Keras</h1>
+<ul>
 <li>Always output the same value; no activation at the last layer</li>
 </ul>
 
 </div> 
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
     window.onload = detectors();
 </script>
     <div class="post-footer">

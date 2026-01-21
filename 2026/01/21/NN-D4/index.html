@@ -14,7 +14,7 @@
 
 
 
-<title>This is Yufan Xia</title>
+<title>NN-D4 | This is Yufan Xia</title>
 
 
 
@@ -45,6 +45,19 @@
 
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+    };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
@@ -118,12 +131,12 @@
         <div class="post-title">
             
             
-                *Untitled
+                NN-D4
             
             
         </div>
         <span class="post-date">
-            Feb 8, 2023
+            Jan 21, 2026
         </span>
     </div>
     <div class="post-img">
@@ -133,10 +146,103 @@
     </div>
 </div>
     <div class="post-content">
-    
+    <p>kcal/mol</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">D4</th>
+<th style="text-align:left"></th>
+<th style="text-align:left">NN-D4</th>
+<th style="text-align:left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">Train set</td>
+<td style="text-align:left">Test set</td>
+<td style="text-align:left">Train set</td>
+<td style="text-align:left">Test set</td>
+</tr>
+<tr>
+<td style="text-align:left">r2scan</td>
+<td style="text-align:left">1.959</td>
+<td style="text-align:left">1.866</td>
+<td style="text-align:left">0.018</td>
+<td style="text-align:left">0.040</td>
+</tr>
+<tr>
+<td style="text-align:left">b3lyp</td>
+<td style="text-align:left">0.247</td>
+<td style="text-align:left">0.272</td>
+<td style="text-align:left">0.016</td>
+<td style="text-align:left">0.056</td>
+</tr>
+<tr>
+<td style="text-align:left">pbe</td>
+<td style="text-align:left">1.230</td>
+<td style="text-align:left">1.151</td>
+<td style="text-align:left">0.013</td>
+<td style="text-align:left">0.056</td>
+</tr>
+<tr>
+<td style="text-align:left">pbe0</td>
+<td style="text-align:left">1.232</td>
+<td style="text-align:left">1.145</td>
+<td style="text-align:left">0.127</td>
+<td style="text-align:left">0.128</td>
+</tr>
+<tr>
+<td style="text-align:left">wb97x</td>
+<td style="text-align:left">2.245</td>
+<td style="text-align:left">2.168</td>
+<td style="text-align:left">0.011</td>
+<td style="text-align:left">0.043</td>
+</tr>
+<tr>
+<td style="text-align:left">m06</td>
+<td style="text-align:left">2.054</td>
+<td style="text-align:left">2.021</td>
+<td style="text-align:left">0.048</td>
+<td style="text-align:left">0.132</td>
+</tr>
+<tr>
+<td style="text-align:left">wb97m</td>
+<td style="text-align:left">2.790</td>
+<td style="text-align:left">2.453</td>
+<td style="text-align:left">0.040</td>
+<td style="text-align:left">0.077</td>
+</tr>
+<tr>
+<td style="text-align:left">tpss</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">blyp</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">scan</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+
 </div> 
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
     window.onload = detectors();
 </script>
     <div class="post-footer">
@@ -144,6 +250,11 @@
     <nav class="post-nav">
         <div class="prev-item">
            
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2026/01/21/%E8%8C%83%E5%BE%B7%E5%8D%8E%E5%8A%9B%E5%92%8C%E8%89%B2%E6%95%A3%E5%8A%9B/">Prev</a>
+                </div>
+            
         </div>
         <div class="next-item">
             
