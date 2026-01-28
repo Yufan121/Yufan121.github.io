@@ -1,6 +1,35 @@
+.archives-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $margin-m-1;
+  margin-bottom: $margin-l-0;
+}
+.archives-toolbar #archive-search {
+  min-width: 12rem;
+  padding: $margin-m-0 $margin-m-1;
+  border: 1px solid $color-text-secondary;
+  border-radius: 4px;
+}
+.archives-toolbar #archive-sort {
+  padding: $margin-m-0 $margin-m-1;
+  border: 1px solid $color-text-secondary;
+  border-radius: 4px;
+}
+.archive-no-results {
+  color: $color-text-secondary;
+  margin-top: $margin-l-0;
+}
 .year-title {
   margin-top: $margin-primary;
   margin-bottom: $margin-m-1;
+}
+.month-title {
+  margin-top: $margin-m-1;
+  margin-bottom: $margin-m-1;
+  margin-left: $margin-l-0;
+  font-variation-settings: 'wght' $font-weight-medium;
+  color: $color-text-secondary;
 }
 .post-list-item {
   display: flex;

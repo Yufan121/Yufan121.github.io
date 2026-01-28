@@ -120,14 +120,48 @@
 
       <div class="main">
         <div class="flex-container">
-          <div class="post-list">
-    
-    
+          
+<div class="archives-toolbar">
+    <input type="text" id="archive-search" placeholder="Search posts by title or tags..." aria-label="Search posts" />
+    <select id="archive-sort" aria-label="Sort posts">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title-asc">Title A–Z</option>
+        <option value="title-desc">Title Z–A</option>
+    </select>
+</div>
+<script type="application/json" id="posts-data">W3sidGl0bGUiOiJERlQtRDQgUHl0b3JjaCBWZXJzaW9uIFdvcmtmbG93IiwicGF0aCI6Ii8yMDI2LzAxLzIxL0M2LWluLUQ0LURpc3BlcnNpb24tTW9kZWwvIiwiZGF0ZSI6IjIwMjYtMDEtMjEiLCJkYXRlRGlzcGxheSI6IkphbiAyMSwgMjAyNiIsIm1vbnRoTGFiZWwiOiJKYW51YXJ5IDIwMjYiLCJ0YWdzIjpbXX0seyJ0aXRsZSI6IkNPTVA0MzAwIExhYjQiLCJwYXRoIjoiLzIwMjIvMDUvMDQvTGFiNC8iLCJkYXRlIjoiMjAyMi0wNS0wNCIsImRhdGVEaXNwbGF5IjoiTWF5IDQsIDIwMjIiLCJtb250aExhYmVsIjoiTWF5IDIwMjIiLCJ0YWdzIjpbXX0seyJ0aXRsZSI6Ik5OLUQ0IFBlcmZvcm1hbmNlIFN0YXRzIiwicGF0aCI6Ii8yMDI2LzAxLzIxL05OLUQ0LyIsImRhdGUiOiIyMDI2LTAxLTIxIiwiZGF0ZURpc3BsYXkiOiJKYW4gMjEsIDIwMjYiLCJtb250aExhYmVsIjoiSmFudWFyeSAyMDI2IiwidGFncyI6W119LHsidGl0bGUiOiJIZWxsbyBXb3JsZCIsInBhdGgiOiIvMjAyMi8wNS8wNC9oZWxsby13b3JsZC8iLCJkYXRlIjoiMjAyMi0wNS0wNCIsImRhdGVEaXNwbGF5IjoiTWF5IDQsIDIwMjIiLCJtb250aExhYmVsIjoiTWF5IDIwMjIiLCJ0YWdzIjpbXX0seyJ0aXRsZSI6IkxhYjQiLCJwYXRoIjoiLzIwMjIvMDUvMDQvS2VyYXMvIiwiZGF0ZSI6IjIwMjItMDUtMDQiLCJkYXRlRGlzcGxheSI6Ik1heSA0LCAyMDIyIiwibW9udGhMYWJlbCI6Ik1heSAyMDIyIiwidGFncyI6W119LHsidGl0bGUiOiJDT01QNDMwMCBMYWI1IiwicGF0aCI6Ii8yMDIyLzA1LzA0L0xhYjUvIiwiZGF0ZSI6IjIwMjItMDUtMDQiLCJkYXRlRGlzcGxheSI6Ik1heSA0LCAyMDIyIiwibW9udGhMYWJlbCI6Ik1heSAyMDIyIiwidGFncyI6W119LHsidGl0bGUiOiJBSeS4jumAhuWfjuW4guWMliIsInBhdGgiOiIvMjAyNi8wMS8yMS9BSV9hbmRfZGVfdXJiYW5pemF0aW9uLyIsImRhdGUiOiIyMDI2LTAxLTIxIiwiZGF0ZURpc3BsYXkiOiJKYW4gMjEsIDIwMjYiLCJtb250aExhYmVsIjoiSmFudWFyeSAyMDI2IiwidGFncyI6W119LHsidGl0bGUiOiJBSea1qua9ruS4i+eahOWPjeWQkei/kOWKqCIsInBhdGgiOiIvMjAyNi8wMS8yMS9BSV9hbmRfcmV2ZXJzZV9tb3ZlbWVudC8iLCJkYXRlIjoiMjAyNi0wMS0yMSIsImRhdGVEaXNwbGF5IjoiSmFuIDIxLCAyMDI2IiwibW9udGhMYWJlbCI6IkphbnVhcnkgMjAyNiIsInRhZ3MiOltdfSx7InRpdGxlIjoi6IyD5b635Y2O5Yqb5ZKM6Imy5pWj5YqbIiwicGF0aCI6Ii8yMDI2LzAxLzIxL1ZhbmRlcnZhbGxfYW5kX2Rpc3BlcnNpb24vIiwiZGF0ZSI6IjIwMjYtMDEtMjEiLCJkYXRlRGlzcGxheSI6IkphbiAyMSwgMjAyNiIsIm1vbnRoTGFiZWwiOiJKYW51YXJ5IDIwMjYiLCJ0YWdzIjpbXX0seyJ0aXRsZSI6IkthZ2dsZSBTdGFuZm9yZCBSTkEgM0QgRm9sZGluZyDnq57otZvnroDku4siLCJwYXRoIjoiLzIwMjYvMDEvMjIvc3RhbmZvcmQtcm5hLWZvbGRpbmcvIiwiZGF0ZSI6IjIwMjYtMDEtMjIiLCJkYXRlRGlzcGxheSI6IkphbiAyMiwgMjAyNiIsIm1vbnRoTGFiZWwiOiJKYW51YXJ5IDIwMjYiLCJ0YWdzIjpbXX0seyJ0aXRsZSI6IkthZ2dsZeavlOi1m+eahOS4u+imgeeUqOWkhCIsInBhdGgiOiIvMjAyNi8wMS8yMi9rYWdnbGUtYW5kLXB1YmxpY2F0aW9ucy8iLCJkYXRlIjoiMjAyNi0wMS0yMiIsImRhdGVEaXNwbGF5IjoiSmFuIDIyLCAyMDI2IiwibW9udGhMYWJlbCI6IkphbnVhcnkgMjAyNiIsInRhZ3MiOltdfSx7InRpdGxlIjoiSmVmZnJleSBQZmVmZmVy55qE5p2D5Yqb5LiD5rOV5YiZ77ya5oC757uT5LiO6KGM5Yqo6K6h5YiSIiwicGF0aCI6Ii8yMDI2LzAxLzI2L0plZmZlcnktUGZlZmZlci8iLCJkYXRlIjoiMjAyNi0wMS0yNiIsImRhdGVEaXNwbGF5IjoiSmFuIDI2LCAyMDI2IiwibW9udGhMYWJlbCI6IkphbnVhcnkgMjAyNiIsInRhZ3MiOltdfSx7InRpdGxlIjoi5LiW55WM5Li76KaB5Z+O5biC55qE55S16L2m5Y+R5bGV5Y+yIiwicGF0aCI6Ii8yMDI2LzAxLzI5L3RyYW0tYW5kLW1lbGJvdXJuZS8iLCJkYXRlIjoiMjAyNi0wMS0yOSIsImRhdGVEaXNwbGF5IjoiSmFuIDI5LCAyMDI2IiwibW9udGhMYWJlbCI6IkphbnVhcnkgMjAyNiIsInRhZ3MiOltdfV0=</script>
 
+<div class="post-list">
+    
+    
         
 
         
             <div class="year-title">2022</div>
+        
+
+        
+            <div class="month-title">May 2022</div>
+        
+
+        <div class="post-list-item">
+            <div class="post-title">
+            <a href="/2022/05/04/Lab4/">
+                
+                    COMP4300 Lab4
+                
+                </a> 
+            </div>
+            
+            <span class="post-date">May 4, 2022</span>
+        </div>
+
+    
+        
+
+        
+
         
 
         <div class="post-list-item">
@@ -143,6 +177,7 @@
         </div>
 
     
+        
 
         
 
